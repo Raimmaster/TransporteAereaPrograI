@@ -34,9 +34,14 @@ public class Aerolinea {
                         if(vacia>=0){
                             rutas[vacia] = new Ruta(vacia);
                         }
+                        System.out.print("\n\n");
                         break;
                     case 2:
-                        
+                        int num;
+                        System.out.print("Ingrese numero de vuelo: "); num = rd.nextInt();
+                        if (rutaDisponible(num))
+                            rutas[rutas[num].getNumeroVuelo()].addPasajeroToRuta();
+                        System.out.println("");
                         break;
                     case 3:
                         
@@ -64,6 +69,10 @@ public class Aerolinea {
         
     }
     
+    /**
+     * Funcion para ver si hay espacios para crear rutas
+     * @return Retorna la posicion del arreglo donde hay espacio para crear ruta
+     */
     public int rutaVacia(){
         //System.out.print("Entro en rutavacia");
         for (int i = 0; i < max; i++) {
@@ -73,5 +82,37 @@ public class Aerolinea {
         }
         System.out.print("No hay rutas vacias");
         return -1;
+    }
+    
+    /**
+     * 
+     * @param x Especifica la posicion del arreglo para verificar si existe
+     * @return Retorna true si existe la ruta o false en caso contrario
+     */
+    public boolean rutaDisponible(int x){
+        if (rutas[x]!=null){
+                System.out.printf("\tRuta: %d\n\tDestino: %s\n", rutas[x].getNumeroVuelo(), rutas[x].getDestino());
+                return true;
+        }
+        System.out.print("No existe dicha ruta\n\n");
+        return false;
+    }
+    
+    /**
+     * Funcion para devolver la ruta que mas ganancias percibio
+     * @return Retorna el objeto Ruta que percibio mas ganancias
+     */
+    public Ruta rentable(){
+        Ruta rent = null;
+        double gan = 0;
+        for (int i = 0; i < max; i++) {
+            if (rutas[i]!=null &&rutas[i].getGanancias()>gan){
+                gan = rutas[i].getGanancias();
+                rent = rutas[i];
+            }
+        }
+        if (rent==null)
+            return null;
+        return rent;
     }
 }
