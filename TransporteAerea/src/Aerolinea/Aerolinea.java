@@ -3,98 +3,55 @@ package Aerolinea;
 import java.util.Scanner;
 
 public class Aerolinea {
-    int max;
+    int max, resp;
     Ruta rutas[];
+    Scanner rd = new Scanner(System.in);
     public Aerolinea(){
-        Scanner rd = new Scanner(System.in);
         System.out.print("Ingrese cantidad maxima de rutas de la Aerolinea: "); 
         max = rd.nextInt();
         rutas = new Ruta[max];
-        boolean state=false; //variable para el estado del login
-        int resp;
-        do{
-            do{
-            //login
-                state=true;
-            }while(state==false);
-            do{
-                //MENU PRINCIPAL
-                System.out.print("MENU PRINCIPAL:\n"
-                        + "\t 1 - CREAR UNA RUTA \n"
-                        + "\t 2 - BOLETERIA \n"
-                        + "\t 3 - DESPACHAR VUELO \n"
-                        + "\t 4 - REPORTES \n"
-                        + "\t 5 - USUARIOS \n"
-                        + "\t 6 - CERRAR SESION \n"
-                        + "\t 7 - CERRAR PROGRAMA \n"
-                        + "Seleccione opcion: "); resp=rd.nextInt();
-                switch(resp){
-                    case 1:
-                        int vacia = rutaVacia();
-                        if(vacia>=0){
-                            rutas[vacia] = new Ruta(vacia);
-                        }
-                        System.out.print("\n\n");
-                        break;
-                    case 2:
-                        if (rutasCreadas()==true){
-                           do{
-                                System.out.print("--Menu de Boleteria--\n"
-                                        + "\t1 - Vender Boleto\n"
-                                        + "\t2 - Cancelar Ticket\n"
-                                        + "\t3 - Salir al Menu Principal\n"
-                                        + "\t Seleccione Opcion: "); resp=rd.nextInt();
-                                if (resp==1){
-                                    int num;
-                                    System.out.print("Ingrese numero de vuelo: "); num = rd.nextInt();
-                                    if (getFilaById(num)!=-1 && rutaDisponibleByFila(getFilaById(num))==true)
-                                        rutas[getFilaById(num)].addPasajeroToRuta();
-                                    else
-                                        System.out.print("Numero de vuelo no existe\n");
-                                    System.out.println("");
-                                }else if(resp==2){
-                                    int num;
-                                    System.out.print("Ingrese numero de vuelo: "); num = rd.nextInt();
-                                    if (getFilaById(num)!=-1 && rutaDisponibleByFila(getFilaById(num))==true)
-                                        rutas[getFilaById(num)].deletePasajero();
-                                    else
-                                        System.out.print("Numero de vuelo no existe\n");
-                                    System.out.println("");
-                                }else if(resp==3){
-                                    System.out.print("Saliendo al menu principal");
-                                }else
-                                    System.out.print("Ingrese una opcion valida");
-                            }while(resp!=3);
-                            break; 
-                        }else
-                            System.out.print("No hay rutas Creadas\n");
-                        
-                    case 3:
-                        
-                        break;
-                    case 4:
-                        
-                        break;
-                    case 5:
-                        
-                        break;
-                    case 6:
-                        System.out.print("\t--Cerrando Sesion..!!");
-                        break;
-                    case 7:
-                        System.out.print("\t--Saliendo del Programa...!!");
-                        break;
-                    default:
-                        System.out.print("Ingrese una opcion valida");
-                }
-            }while(resp!=7);
-            if(resp==7)
-                break;
-        }while(state==false);
-        
-        
     }
     
+    public void crearRuta(){
+        int vacia = rutaVacia();
+            if(vacia>=0){
+                rutas[vacia] = new Ruta(vacia);
+            }
+        System.out.print("\n\n");
+    }
+    
+    public void boleteria(){
+        if (rutasCreadas()==true){
+           do{
+                System.out.print("--Menu de Boleteria--\n"
+                        + "\t1 - Vender Boleto\n"
+                        + "\t2 - Cancelar Ticket\n"
+                        + "\t3 - Salir al Menu Principal\n"
+                        + "\t Seleccione Opcion: ");resp=rd.nextInt();
+                if (resp==1){
+                    int num;
+                    System.out.print("Ingrese numero de vuelo: "); num = rd.nextInt();
+                    if (getFilaById(num)!=-1 && rutaDisponibleByFila(getFilaById(num))==true)
+                        rutas[getFilaById(num)].addPasajeroToRuta();
+                    else
+                        System.out.print("Numero de vuelo no existe\n");
+                    System.out.println("");
+                }else if(resp==2){
+                    int num;
+                    System.out.print("Ingrese numero de vuelo: "); num = rd.nextInt();
+                    if (getFilaById(num)!=-1 && rutaDisponibleByFila(getFilaById(num))==true)
+                        rutas[getFilaById(num)].deletePasajero();
+                    else
+                        System.out.print("Numero de vuelo no existe\n");
+                    System.out.println("");
+                }else if(resp==3){
+                    System.out.print("Saliendo al menu principal");
+                }else
+                    System.out.print("Ingrese una opcion valida");
+            }while(resp!=3);
+        }else
+            System.out.print("No hay rutas Creadas\n");
+    }
     /**
      * Funcion para ver si hay espacios para crear rutas
      * @return Retorna la posicion del arreglo donde hay espacio para crear ruta
