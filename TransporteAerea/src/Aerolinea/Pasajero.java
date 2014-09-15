@@ -22,11 +22,33 @@ public class Pasajero {
             return true;
         return false;
     }
-    public void subtotal(double s){
+    
+    public void calcularTotal(double s, double p1, double p2){
         subtotal = s;
         if (edad>65)
             descuento = subtotal * 0.35;
-        impuesto = subtotal * 0.15;
+        impuesto = (p1+p2)* 0.05;
+        total = subtotal - descuento + impuesto;
+    }
+    
+    public double getSubtotal(){
+        return subtotal;
+    }
+    
+    public double getTotal(){
+        return total;
+    }
+    
+    public double getImpuesto(){
+        return impuesto;
+    }
+    
+    public double getDescuento(){
+        return descuento;
+    }
+    
+    public int getId(){
+        return id;
     }
 }
 

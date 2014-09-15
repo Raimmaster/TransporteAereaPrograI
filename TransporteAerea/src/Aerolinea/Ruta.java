@@ -25,7 +25,7 @@ public class Ruta {
         System.out.print("Ingrese Cantidad de Asientos: "); maxi = rd.nextInt();
         pasajeros = new Pasajero[maxi];
         System.out.print("Ingrese cantidad de asientos de primera clase: "); clase1 = rd.nextInt();
-        System.out.print("Ingrese precio de asiento en primera clae: ");precio1 = rd.nextInt();
+        System.out.print("Ingrese precio de asiento en primera clase: ");precio1 = rd.nextInt();
         System.out.print("Ingrese precio de asiento economico: ");precioe = rd.nextInt();
         System.out.print("Ingrese costo de despacho de avion: ");costo = rd.nextInt();
         System.out.print("<<----- RUTA CREADA ----->>");
@@ -49,6 +49,17 @@ public class Ruta {
             if (numero <=getMaxAsientos() && numero!=0){
                 if (pasajeros[numero-1]==null){
                     pasajeros[numero-1] = new Pasajero(id, nombre, edad, genero, fila);
+                    if (numero>0 && numero<=clase1){
+                        pasajeros[numero-1].calcularTotal(precio1, precio1, precioe);
+                    }else{
+                        pasajeros[numero-1].calcularTotal(precioe, precio1, precioe);
+                    }
+                    System.out.print("-->>Imprimiendo facturacion de boleto:\n");
+                    System.out.printf("Subtotal: %f%nImpuesto: %f%nDescuento%d%nTotal a Pagar: %f%n",
+                            pasajeros[numero-1].getSubtotal(), pasajeros[numero-1].getImpuesto(), 
+                            pasajeros[numero-1].getDescuento(), pasajeros[numero-1].getTotal());
+                    ventas+=pasajeros[numero-1].getTotal();
+                    llenos++;
                     state = true;
                 }else{
                     System.out.print("Asiento no disponible, Intentelo de Nuevo");
@@ -62,6 +73,33 @@ public class Ruta {
         System.out.print("<<----- PASAJERO CREADO ----->>");
     }
     
+    public void deletePasajero(){
+        int numero, id, cont=0;
+        String conf;
+        int state=0;
+        System.out.print("Ingrese Numero de Identidad: "); id = rd.nextInt();
+        System.out.print("Ingrese Numero de Asiento: "); numero = rd.nextInt();
+        if (numero <=getMaxAsientos() && numero!=0){
+            for(Pasajero p : pasajeros){
+                if (p.getId()== id && cont==numero-1){
+                    ventas-=p.getTotal();
+                    System.out.print("Realmente desea eliminar su Ticket(si/no)?"); conf = rd.next();
+                    if (conf.equalsIgnoreCase("si")){
+                        p = null;
+                        System.out.print("Pasajero Eliminado Correctamente");
+                        state = 1;
+                    }else
+                        System.out.print("Accion Cancelada\n");
+                    break;
+                }else
+                    state = 2;
+                cont++;
+            }
+        }
+        if (state==2)
+            System.out.print("No existe Pasajero con dicho numero de identidad");
+        
+    }
     
     /**
      * Funcion para obtener la cantidad de asientos disponibles
@@ -137,7 +175,7 @@ public class Ruta {
     /**
      * Funcion para validar que el asiento x esta vacio
      * @param x Numero de asiento a validar
-     * @return Retorna true si el asiento esta vacio o false en caso contrario
+     * @return Devuelve true si el asiento esta vacio o false en caso contrario
      */
     public boolean validarAsientoVacio(int x){
         if (pasajeros[x] == null)
@@ -147,10 +185,26 @@ public class Ruta {
     
     /**
      * Funcion para devolver las ganancias de la ruta
-     * @return Retorna las ganancias percibidas
+     * @return Devuelve las ganancias percibidas
      */
     public double getGanancias(){
         return ganancias;
+    }
+    
+    /**
+     * Funcion para obtener el Numero de Vuelo
+     * @return Devuelve el numero de vuelo
+     */
+    public int getId(){
+        return id;
+    }
+    
+    /**
+     * Funcion para obtener la fila
+     * @return Devuelve la fila
+     */
+    public int getFila(){
+        return fila;
     }
 }
 

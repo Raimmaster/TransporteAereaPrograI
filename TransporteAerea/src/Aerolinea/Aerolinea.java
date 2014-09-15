@@ -37,12 +37,38 @@ public class Aerolinea {
                         System.out.print("\n\n");
                         break;
                     case 2:
-                        int num;
-                        System.out.print("Ingrese numero de vuelo: "); num = rd.nextInt();
-                        if (rutaDisponible(num))
-                            rutas[rutas[num].getNumeroVuelo()].addPasajeroToRuta();
-                        System.out.println("");
-                        break;
+                        if (rutasCreadas()==true){
+                           do{
+                                System.out.print("--Menu de Boleteria--\n"
+                                        + "\t1 - Vender Boleto\n"
+                                        + "\t2 - Cancelar Ticket\n"
+                                        + "\t3 - Salir al Menu Principal\n"
+                                        + "\t Seleccione Opcion: "); resp=rd.nextInt();
+                                if (resp==1){
+                                    int num;
+                                    System.out.print("Ingrese numero de vuelo: "); num = rd.nextInt();
+                                    if (getFilaById(num)!=-1 && rutaDisponibleByFila(getFilaById(num))==true)
+                                        rutas[getFilaById(num)].addPasajeroToRuta();
+                                    else
+                                        System.out.print("Numero de vuelo no existe\n");
+                                    System.out.println("");
+                                }else if(resp==2){
+                                    int num;
+                                    System.out.print("Ingrese numero de vuelo: "); num = rd.nextInt();
+                                    if (getFilaById(num)!=-1 && rutaDisponibleByFila(getFilaById(num))==true)
+                                        rutas[getFilaById(num)].deletePasajero();
+                                    else
+                                        System.out.print("Numero de vuelo no existe\n");
+                                    System.out.println("");
+                                }else if(resp==3){
+                                    System.out.print("Saliendo al menu principal");
+                                }else
+                                    System.out.print("Ingrese una opcion valida");
+                            }while(resp!=3);
+                            break; 
+                        }else
+                            System.out.print("No hay rutas Creadas\n");
+                        
                     case 3:
                         
                         break;
@@ -61,7 +87,7 @@ public class Aerolinea {
                     default:
                         System.out.print("Ingrese una opcion valida");
                 }
-            }while(resp!=6 && resp!=7);
+            }while(resp!=7);
             if(resp==7)
                 break;
         }while(state==false);
@@ -84,18 +110,36 @@ public class Aerolinea {
         return -1;
     }
     
+    public boolean rutasCreadas(){
+        for (int i = 0; i < max; i++) {
+            if (rutas[i]!=null){
+                return true;
+            }
+        }
+        return false;
+    }
+    
     /**
      * 
      * @param x Especifica la posicion del arreglo para verificar si existe
      * @return Retorna true si existe la ruta o false en caso contrario
      */
-    public boolean rutaDisponible(int x){
+    public boolean rutaDisponibleByFila(int x){
         if (rutas[x]!=null){
                 System.out.printf("\tRuta: %d\n\tDestino: %s\n", rutas[x].getNumeroVuelo(), rutas[x].getDestino());
                 return true;
         }
         System.out.print("No existe dicha ruta\n\n");
         return false;
+    }
+    
+    public int getFilaById(int x){
+        for (int i = 0; i < max; i++) {
+            if (rutas[i]!=null && rutas[i].getId()==x){
+                return rutas[i].getFila();
+            }
+        }
+        return -1;
     }
     
     /**
