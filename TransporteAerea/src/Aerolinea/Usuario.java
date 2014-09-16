@@ -1,13 +1,10 @@
 package Aerolinea;
-import java.util.Scanner;
 public class Usuario {
     
    //Atributos
     private String nombreUsuario,userName,userPassword,userTipo;
-   
     
-
-    //Constructor
+//Constructor
     /**
      * 
      * @param nombre
@@ -20,6 +17,22 @@ public class Usuario {
         userName = usuario;
         userPassword = password;
         userTipo = tipo;
+    }
+    
+    
+    public void agregarUsuario( String nombre,String usuario, String password, String tipo){
+        nombreUsuario = nombre;
+        userName = usuario;
+        userPassword = password;
+        userTipo = tipo;
+    }
+    
+    
+    public void editUsuario( String nombre,String usuario, String password){
+        nombreUsuario = nombre;
+        userName = usuario;
+        userPassword = password;
+        
     }
     
      public String getNombreUsuario() {

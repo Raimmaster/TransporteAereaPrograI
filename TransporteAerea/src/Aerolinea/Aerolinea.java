@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 public class Aerolinea {
     Usuario [] user;
+    
     private static final int CANT_USER = 10;
     int max, resp;
     Ruta rutas[];
@@ -20,8 +21,21 @@ public class Aerolinea {
                 if(user[i] == null)
                     return  i;
         }
+        System.out.println("No hay Usuario");
         return -1;
     }
+    
+    public boolean validarNombreUsuario(String n){
+        
+        for (Usuario us : user){  
+           if(us != null && us.getUserName()!=n){
+               return true;
+           }
+           
+    }
+        return false;
+    }
+        
     
     public void crearRuta(){
         int vacia = rutaVacia();
