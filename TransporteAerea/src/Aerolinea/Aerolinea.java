@@ -3,13 +3,23 @@ package Aerolinea;
 import java.util.Scanner;
 
 public class Aerolinea {
+    Usuario [] user;
+    private static final int CANT_USER = 10;
     int max, resp;
     Ruta rutas[];
     Scanner rd = new Scanner(System.in);
     public Aerolinea(){
+        user = new Usuario[CANT_USER];
         System.out.print("Ingrese cantidad maxima de rutas de la Aerolinea: "); 
         max = rd.nextInt();
         rutas = new Ruta[max];
+    }
+    
+    public int posVacia(){
+        for (int i = 0; i < 10; i++){
+            if(user[i] == null){
+            return  i;
+        }   return -1;
     }
     
     public void crearRuta(){

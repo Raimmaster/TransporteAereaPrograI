@@ -30,6 +30,10 @@ public class Ruta {
         System.out.print("Ingrese costo de despacho de avion: ");costo = rd.nextInt();
         System.out.print("<<----- RUTA CREADA ----->>");
     }
+
+    Ruta(int vacia) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     /**
      * Funcion para agregar nuevo pasajero a la ruta
