@@ -25,6 +25,15 @@ public class Aerolinea {
         return -1;
     }
     
+    public int sigPosicionVacia(){
+        for (int i = 0; i < 10; i++){
+            if(user[i] == null)
+                return i;
+        }
+        return -1;
+    }
+    
+    
     public boolean validarNombreUsuario(String n){
         
         for (Usuario us : user){  
@@ -35,6 +44,34 @@ public class Aerolinea {
     }
         return false;
     }
+    
+    
+    public void AddNuevoUsuario(){
+    String namecomplete,username,password,tipcuent;
+    System.out.println("Ingrese un Nuevo UserName: ");
+    String userna = rd.next();
+    validarNombreUsuario(userna);
+    
+    if (validarNombreUsuario(rd.next()) == true){
+        System.out.println("Ingrese Su Nombre Completo:");
+        namecomplete = rd.next();
+        System.out.println("Ingrese una Contraseña");
+        password = rd.next();
+        System.out.println("Tipo de Cuenta: ADMIN , CONTENT , LIMIT:");
+        tipcuent = rd.next();
+        user[usuarioVacio()]= new Usuario(namecomplete,userna,password,tipcuent);
+        
+    }else{
+        System.out.println("Ya Existe Usuario con ese USERNAME");
+    }
+}
+        
+    
+    public void EditUsuario(){
+        
+    }
+    
+    
         
     
     public void crearRuta(){
