@@ -28,7 +28,7 @@ public class Aerolinea {
     public boolean validarNombreUsuario(String n){
         
         for (Usuario us : user){  
-           if(us != null && us.getUserName()!=n){
+           if(us != null && us.getUserName().equalsIgnoreCase(n)){
                return true;
            }
            
