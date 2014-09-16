@@ -1,54 +1,36 @@
 package Aerolinea;
+
 public class Usuario {
     
-   //Atributos
-    private String nombreUsuario,userName,userPassword,userTipo;
-    
-//Constructor
-    /**
-     * 
-     * @param nombre
-     * @param usuario
-     * @param password
-     * @param tipo 
-     */
-    public Usuario( String nombre,String usuario, String password, String tipo){
-        nombreUsuario = nombre;
-        userName = usuario;
-        userPassword = password;
-        userTipo = tipo;
-    }
+    private String name,user,tip;
+    private int pass;
+   
     
     
-    public void agregarUsuario( String nombre,String usuario, String password, String tipo){
-        nombreUsuario = nombre;
-        userName = usuario;
-        userPassword = password;
-        userTipo = tipo;
-    }
-    
-    
-    public void editUsuario( String nombre,String usuario, String password){
-        nombreUsuario = nombre;
-        userName = usuario;
-        userPassword = password;
+    //Constructor
+    public Usuario( String use,int pas, String tp, String nam){
+        name = nam;
+        user = use;
+        pass= pas;
+        tip = tp;
+        
         
     }
     
-     public String getNombreUsuario() {
-        return nombreUsuario;
+    
+    public void edit(String nam , String use, int pas , String tp){
+        name = nam;
+        user = use;
+        pass = pas;
+        tip = tp;
     }
     
-    public String getUserName() {
-        return userName;
+    public boolean creado(String u){
+        if(user == u )
+            return true;
+        return false;
     }
-
-    public String getUserPassword() {
-        return userPassword;
-    }
-
-    public String getUserTipo() {
-        return userTipo;
-    }
-
+    
+    
+    
 }

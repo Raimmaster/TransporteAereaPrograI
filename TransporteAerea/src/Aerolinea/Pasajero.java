@@ -2,12 +2,12 @@ package Aerolinea;
 
 public class Pasajero {
     private static int vendidos;
-    private int edad, id, vuelo;
+    private int edad, vuelo;
     private double subtotal, descuento, impuesto, total;
-    private String nombre;
+    private String nombre, id;
     private char genero;
     
-    public Pasajero(int i, String n, int e, char g, int v){
+    public Pasajero(String i, String n, int e, char g, int v){
         vendidos++;
         id = i;
         nombre = n;
@@ -47,8 +47,14 @@ public class Pasajero {
         return descuento;
     }
     
-    public int getId(){
+    public String getId(){
         return id;
+    }
+    
+    public void printTotales(){
+        System.out.printf("Subtotal: %f%nImpuesto: %f%nDescuento%d%nTotal a Pagar: %f%n",
+                            subtotal, impuesto, descuento, total);
+                    
     }
 }
 

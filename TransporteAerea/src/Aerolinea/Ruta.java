@@ -3,6 +3,8 @@ package Aerolinea;
 import java.util.Scanner;
 
 public class Ruta {
+    private static String ident;
+    private static int asiento;
     private static Pasajero rentable;
     private static double ventas;
     private static double ganancias;
@@ -30,35 +32,46 @@ public class Ruta {
         System.out.print("Ingrese costo de despacho de avion: ");costo = rd.nextInt();
         System.out.print("<<----- RUTA CREADA ----->>");
     }
-
+    
+    public int getMaxiAsientos(){
+        return maxi;
+    }
+    
+    public static String getIdCreado(){
+        return ident;
+    }
+    
+    public static int getAsientoCreado(){
+        return asiento;
+    }
     
     /**
      * Funcion para agregar nuevo pasajero a la ruta
+     * @return Devuelve true si se creo el pasajero o false en caso contrario.
      */
-    public void addPasajeroToRuta(){
-        String nombre;
+    public boolean addPasajeroToRuta(){
+        String nombre, id;
         char genero;
-        int edad, id, vuelo, numero;
+        int edad, vuelo, numero;
         boolean state=false;
         
-        System.out.print("Ingrese numero de identidad: "); id = rd.nextInt();
+        System.out.print("Ingrese numero de identidad: "); id = rd.next(); ident=id;
         System.out.print("ingrese Nombre Completo: "); nombre = rd.next();
         System.out.print("Ingrese edad: "); edad = rd.nextInt();
         System.out.print("Ingrese genero: "); genero = rd.next().charAt(0);
         do{
-            System.out.print("Ingrese Numero de Asiento: "); numero = rd.nextInt();
+            System.out.printf("Ingrese Numero de Asiento entre 1 y %d: ", maxi); numero = rd.nextInt();
             if (numero <=getMaxAsientos() && numero!=0){
                 if (pasajeros[numero-1]==null){
                     pasajeros[numero-1] = new Pasajero(id, nombre, edad, genero, fila);
+                    asiento = numero - 1;
                     if (numero>0 && numero<=clase1){
                         pasajeros[numero-1].calcularTotal(precio1, precio1, precioe);
                     }else{
                         pasajeros[numero-1].calcularTotal(precioe, precio1, precioe);
                     }
                     System.out.print("-->>Imprimiendo facturacion de boleto:\n");
-                    System.out.printf("Subtotal: %f%nImpuesto: %f%nDescuento%d%nTotal a Pagar: %f%n",
-                            pasajeros[numero-1].getSubtotal(), pasajeros[numero-1].getImpuesto(), 
-                            pasajeros[numero-1].getDescuento(), pasajeros[numero-1].getTotal());
+                    pasajeros[numero-1].printTotales();
                     ventas+=pasajeros[numero-1].getTotal();
                     llenos++;
                     state = true;
@@ -72,17 +85,18 @@ public class Ruta {
                 System.out.print("Numero de Asiento no Existe, Intentelo de Nuevo");
         }while (state = false);
         System.out.print("<<----- PASAJERO CREADO ----->>");
+        return state;
     }
     
     public void deletePasajero(){
-        int numero, id, cont=0;
-        String conf;
+        int numero, cont=0;
+        String conf, id;
         int state=0;
-        System.out.print("Ingrese Numero de Identidad: "); id = rd.nextInt();
+        System.out.print("Ingrese Numero de Identidad: "); id = rd.next();
         System.out.print("Ingrese Numero de Asiento: "); numero = rd.nextInt();
         if (numero <=getMaxAsientos() && numero!=0){
             for(Pasajero p : pasajeros){
-                if (p.getId()== id && cont==numero-1){
+                if (p.getId().equalsIgnoreCase(id) && cont==numero-1){
                     ventas-=p.getTotal();
                     System.out.print("Realmente desea eliminar su Ticket(si/no)?"); conf = rd.next();
                     if (conf.equalsIgnoreCase("si")){

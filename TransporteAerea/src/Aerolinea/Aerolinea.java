@@ -3,122 +3,55 @@ package Aerolinea;
 import java.util.Scanner;
 
 public class Aerolinea {
-    Usuario [] user;
-    
-    private static final int CANT_USER = 10;
     int max, resp;
     Ruta rutas[];
+    String asientos[][];
     Scanner rd = new Scanner(System.in);
+    
     public Aerolinea(){
-        user = new Usuario[CANT_USER];
         System.out.print("Ingrese cantidad maxima de rutas de la Aerolinea: "); 
         max = rd.nextInt();
         rutas = new Ruta[max];
+        asientos = new String[max][];
     }
-    
-    public int usuarioVacio(){
-        for (int i = 0; i < 10; i++){
-                if(user[i] == null)
-                    return  i;
-        }
-        System.out.println("No hay Usuario");
-        return -1;
-    }
-    
-    public int sigPosicionVacia(){
-        for (int i = 0; i < 10; i++){
-            if(user[i] == null)
-                return i;
-        }
-        return -1;
-    }
-    
-    
-    public boolean validarNombreUsuario(String n){
-        
-        for (Usuario us : user){  
-           if(us != null && us.getUserName().equalsIgnoreCase(n)){
-               return true;
-           }
-           
-    }
-        return false;
-    }
-    
-    
-    public void AddNuevoUsuario(){
-    String namecomplete,username,password,tipcuent;
-    System.out.println("Ingrese un Nuevo UserName: ");
-    String userna = rd.next();
-    validarNombreUsuario(userna);
-    
-    if (validarNombreUsuario(rd.next()) == true){
-        System.out.println("Ingrese Su Nombre Completo:");
-        namecomplete = rd.next();
-        System.out.println("Ingrese una Contraseña");
-        password = rd.next();
-        System.out.println("Tipo de Cuenta: ADMIN , CONTENT , LIMIT:");
-        tipcuent = rd.next();
-        user[usuarioVacio()]= new Usuario(namecomplete,userna,password,tipcuent);
-        
-    }else{
-        System.out.println("Ya Existe Usuario con ese USERNAME");
-    }
-}
-        
-    
-    public void EditUsuario(){
-        
-    }
-    
-    
-        
     
     public void crearRuta(){
         int vacia = rutaVacia();
             if(vacia>=0){
                 rutas[vacia] = new Ruta(vacia);
+                asientos[vacia] = new String[rutas[vacia].getMaxiAsientos()];
             }
         System.out.print("\n\n");
     }
     
-    public void boleteria(){
-        if (rutasCreadas()==true){
-           do{
-                System.out.print("--Menu de Boleteria--\n"
-                        + "\t1 - Vender Boleto\n"
-                        + "\t2 - Cancelar Ticket\n"
-                        + "\t3 - Salir al Menu Principal\n"
-                        + "\t Seleccione Opcion: ");resp=rd.nextInt();
-                if (resp==1){
-                    int num;
-                    System.out.print("Ingrese numero de vuelo: "); num = rd.nextInt();
-                    if (getFilaById(num)!=-1 && rutaDisponibleByFila(getFilaById(num))==true)
-                        rutas[getFilaById(num)].addPasajeroToRuta();
-                    else
-                        System.out.print("Numero de vuelo no existe\n");
-                    System.out.println("");
-                }else if(resp==2){
-                    int num;
-                    System.out.print("Ingrese numero de vuelo: "); num = rd.nextInt();
-                    if (getFilaById(num)!=-1 && rutaDisponibleByFila(getFilaById(num))==true)
-                        rutas[getFilaById(num)].deletePasajero();
-                    else
-                        System.out.print("Numero de vuelo no existe\n");
-                    System.out.println("");
-                }else if(resp==3){
-                    System.out.print("Saliendo al menu principal");
-                }else
-                    System.out.print("Ingrese una opcion valida");
-            }while(resp!=3);
+    public void venderTicket(){
+        int num;
+        System.out.print("Ingrese numero de vuelo: "); num = rd.nextInt();
+        if (getFilaById(num)!=-1 && rutaDisponibleByFila(getFilaById(num))==true){
+            if (rutas[getFilaById(num)].addPasajeroToRuta()==true){
+                asientos[getFilaById(num)][Ruta.getAsientoCreado()] = Ruta.getIdCreado();
+            }
         }else
-            System.out.print("No hay rutas Creadas\n");
+            System.out.print("Numero de vuelo no existe\n");
+        System.out.println("");
     }
+    
+    public void cancelarTicket(){
+        int num;
+        System.out.print("Ingrese numero de vuelo: "); num = rd.nextInt();
+        if (getFilaById(num)!=-1 && rutaDisponibleByFila(getFilaById(num))==true)
+            rutas[getFilaById(num)].deletePasajero();
+        else
+            System.out.print("Numero de vuelo no existe\n");
+        System.out.println("");
+    }
+    
+    
     /**
      * Funcion para ver si hay espacios para crear rutas
      * @return Retorna la posicion del arreglo donde hay espacio para crear ruta
      */
-    public int rutaVacia(){
+    private int rutaVacia(){
         //System.out.print("Entro en rutavacia");
         for (int i = 0; i < max; i++) {
             if (rutas[i]==null){
@@ -129,7 +62,7 @@ public class Aerolinea {
         return -1;
     }
     
-    public boolean rutasCreadas(){
+    private boolean rutasCreadas(){
         for (int i = 0; i < max; i++) {
             if (rutas[i]!=null){
                 return true;
@@ -143,7 +76,7 @@ public class Aerolinea {
      * @param x Especifica la posicion del arreglo para verificar si existe
      * @return Retorna true si existe la ruta o false en caso contrario
      */
-    public boolean rutaDisponibleByFila(int x){
+    private boolean rutaDisponibleByFila(int x){
         if (rutas[x]!=null){
                 System.out.printf("\tRuta: %d\n\tDestino: %s\n", rutas[x].getNumeroVuelo(), rutas[x].getDestino());
                 return true;
@@ -152,7 +85,7 @@ public class Aerolinea {
         return false;
     }
     
-    public int getFilaById(int x){
+    private int getFilaById(int x){
         for (int i = 0; i < max; i++) {
             if (rutas[i]!=null && rutas[i].getId()==x){
                 return rutas[i].getFila();
@@ -165,7 +98,7 @@ public class Aerolinea {
      * Funcion para devolver la ruta que mas ganancias percibio
      * @return Retorna el objeto Ruta que percibio mas ganancias
      */
-    public Ruta rentable(){
+    private Ruta rentable(){
         Ruta rent = null;
         double gan = 0;
         for (int i = 0; i < max; i++) {

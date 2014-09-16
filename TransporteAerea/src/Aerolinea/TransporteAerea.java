@@ -29,7 +29,27 @@ public class TransporteAerea {
                         Taca.crearRuta();
                         break;
                     case 2:
-                        Taca.boleteria();
+                        int res;
+                        do{
+                            System.out.print("--Menu de Boleteria--\n"
+                        + "\t1 - Vender Boleto\n"
+                        + "\t2 - Cancelar Ticket\n"
+                        + "\t3 - Salir al Menu Principal\n"
+                        + "\t Seleccione Opcion: ");res=rd.nextInt();
+                        switch (res){
+                            case 1:
+                                Taca.venderTicket();
+                                break;
+                            case 2:
+                                Taca.cancelarTicket();
+                                break;
+                            case 3:
+                                System.out.println("Saliendo al Menu Principal");
+                                break;
+                            default:
+                                System.out.println("Ingrese una opcion valida");
+                        }
+                        }while (res!=3);
                         
                     case 3:
                         
