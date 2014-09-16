@@ -37,22 +37,4 @@ public class Usuario {
     public String getUserTipo() {
         return userTipo;
     }
-    
-          
-      
-    /**
-     * 
-     * @param u
-     * @return 
-     */
-    public boolean UserExist(String u){
-        if(userName == u )
-            return true;
-        return false;
-    }
-    
-  
-    
-    
-    
 }

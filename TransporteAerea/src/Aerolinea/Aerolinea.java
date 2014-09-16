@@ -15,11 +15,12 @@ public class Aerolinea {
         rutas = new Ruta[max];
     }
     
-    public int posVacia(){
+    public int usuarioVacio(){
         for (int i = 0; i < 10; i++){
-            if(user[i] == null){
-            return  i;
-        }   return -1;
+                if(user[i] == null)
+                    return  i;
+        }
+        return -1;
     }
     
     public void crearRuta(){
