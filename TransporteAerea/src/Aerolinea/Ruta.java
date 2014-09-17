@@ -5,10 +5,11 @@ import java.util.Scanner;
 public class Ruta {
     private int numVuelo, posicion;
     private String ciudadDestino;
-    private int cantAsientos, cantPrimeraClase;
+    private int cantAsientos, cantPrimeraClase, pasajerosRuta, ecoVendidos, primerVendidos;
     private double precioPrimeraClase, precioClaseEconomica;
     private double costoDespacho, gananciaOrPerdida;
-    private static int RUTAS_CREADAS, ECO_VENDIDOS = 0, PRIMER_VENDIDOS = 0;
+    private static int RUTAS_CREADAS = 0, ECO_VENDIDOS_TOTAL = 0, PRIMER_VENDIDOS_TOTAL = 0;//variables static de boletos y rutas
+    private static double MONTO_TOTAL = 0, COSTO_TOTAL = 0, GANANCIA_O_PERDIDA_TOTAL = 0;//variables static de totales
     private Pasajero [] personas;
     
     private static Scanner lea = new Scanner(System.in);
@@ -34,12 +35,45 @@ public class Ruta {
         precioClaseEconomica = precE;
         costoDespacho = costo;
         posicion = pos;
+        pasajerosRuta = 0;
         RUTAS_CREADAS++;
 
         personas = new Pasajero[asientos];
         System.out.println("\nRUTA CREADA!");
 
     } 
+    
+    /**
+     * Imprime los datos del vuelo. Son los mismos ingresados al crear la ruta.
+     */
+    public void printDatosRuta(){
+        System.out.printf("\nNumero de vuelo: %d - Ciudad de Destino: %s\n" +
+                "Cantidad de asientos totales: %d - Cantidad de asientos de primera clase: %d\n" + 
+                "Precio de asientos de primera clase: %.2f - Precio de asientos de clase economica: %.2f\n" + 
+                "Costo de despacho del vuelo: %.2f", getNumVuelo(), getCiudadDestino(), getCantAsientos(),
+                getCantPrimeraClase(), getPrecioPrimeraClase(), getPrecioClaseEconomica(), getCostoDespacho());
+    }
+    
+    public static double getMontoTotal(){
+        return MONTO_TOTAL;
+    }
+    
+    public static double getCostoTotal(){
+        return COSTO_TOTAL;
+    }
+    
+    /**
+     * Calcula y muestra la ganancia o pérdida total generada del vuelo
+     */
+    public static void calcularGananciaOrPerdidaTotal(){
+        if (MONTO_TOTAL > COSTO_TOTAL){
+            GANANCIA_O_PERDIDA_TOTAL = MONTO_TOTAL - COSTO_TOTAL;
+            System.out.println("La ganancia total generada es de: " + GANANCIA_O_PERDIDA_TOTAL);
+        }else {            
+            GANANCIA_O_PERDIDA_TOTAL = COSTO_TOTAL - MONTO_TOTAL;
+            System.out.println("La perdida total generada es de: " + GANANCIA_O_PERDIDA_TOTAL);
+        }
+    }
 
     public int getNumVuelo(){
         return numVuelo;
@@ -47,6 +81,10 @@ public class Ruta {
 
     public String getCiudadDestino(){
         return ciudadDestino;
+    }
+    
+    public int getPasajerosRuta(){
+        return pasajerosRuta;
     }
 
     public int getCantAsientos(){
@@ -91,12 +129,15 @@ public class Ruta {
      */
     public double calcularPrecioAsiento(int asiento){
         if (asiento > 0 && asiento <= getCantPrimeraClase()){
-            PRIMER_VENDIDOS++;
+            PRIMER_VENDIDOS_TOTAL++;
+            primerVendidos++;
             return getPrecioPrimeraClase();
-        }else{                    
-            ECO_VENDIDOS++;
-            return getPrecioClaseEconomica();            
-        }
+        }                   
+           
+        ECO_VENDIDOS_TOTAL++;
+        ecoVendidos++;
+        return getPrecioClaseEconomica();            
+        
     }
    
     /**
@@ -134,17 +175,22 @@ public class Ruta {
         String gen = lea.next();
         
         personas[esp] = new Pasajero(ident, numVuelo, ed, nomb, gen);
-        
+        pasajerosRuta++;
         //double sub = calcularPrecioAsiento(asiento);
         //personas[esp].setTotales(sub, getPrecioClaseEconomica(), getPrecioPrimeraClase());
         
         return ident;
     } 
     
+    /**
+     * Elimina el pasajero de determinado id
+     * @param id La identidad del pasajero
+     */
     public void eliminarPasajeroById(String id){
         for (Pasajero pas : personas){
             if (pas != null && pas.getId().equals(id)){
                 pas = null;
+                pasajerosRuta--;
             }
         }
     }
@@ -167,23 +213,37 @@ public class Ruta {
     
     /**
      * Busca el pasajero al cual imprimir su boleto
-     * y settear sus totales-
+     * y setear sus totales y también el tipo de asiento del pasajero.
      * @param id Identidad del pasajero.
      * @param seat Asiento del pasajero.
      */
     public void boletoPasajero(String id, int seat){
         Pasajero pasa = buscarPasajero(id);
         double subTotal = calcularPrecioAsiento(seat);
+        pasa.setTipoAsiento(determinarTipoAsiento(seat));
+        pasa.setAsiento(seat);
         pasa.setTotales(subTotal, getPrecioClaseEconomica(), getPrecioPrimeraClase());
         pasa.printBoleto();
+    }
+    
+    /**
+     * Determina el tipo de asiento del pasajero
+     * @param seat El número de asiento del pasajero.
+     * @return 
+     */
+    public String determinarTipoAsiento(int seat){
+        if (seat > 0 && seat <= getCantPrimeraClase())
+            return "Primera Clase";
+           
+        return "Clase economica";
     }
     
     /**
      * Borra todos los pasajeros de la ruta.
      */
     public void borrarPasajeros(){
-        for (Pasajero p : personas){
-            p = null;
+        for (int i = 0; i < personas.length; i++){
+            personas[i] = null;            
         }
     }
     
@@ -231,24 +291,66 @@ public class Ruta {
      * Obtiene la cantidad de boletos económicos vendidos.
      * @return La cantidad de boletos de clase económica vendidos.
      */
-    public static int getEcoVendidos(){
-        return ECO_VENDIDOS;
+    public static int getEcoVendidosTotal(){
+        return ECO_VENDIDOS_TOTAL;
     }
     
     /**
      * Obtiene la cantidad de boletos de primera clase vendidos
      * @return Total de boletos de primera clase
      */
-    public static int getPrimerVendidos(){
-        return PRIMER_VENDIDOS;
+    public static int getPrimerVendidosTotal(){
+        return PRIMER_VENDIDOS_TOTAL;
     }
     
     /**
      * Obtiene el total de boletos vendidos
      * @return La suma de boletos económicos y de primera clase
      */
-    public static int getTotalVendidos(){
-        return ECO_VENDIDOS + PRIMER_VENDIDOS;
+    public static int getTotalVendidosTotal(){
+        return ECO_VENDIDOS_TOTAL + PRIMER_VENDIDOS_TOTAL;
+    }
+    
+    /**
+     * Obtiene la cantidad de boletos de clase económica vendidos en la ruta
+     * @return El total de boletos económicos vendidos
+     */
+    public int getEcoVendidos(){
+        return ecoVendidos;
+    }
+    
+    /**
+     * Obtiene la cantidad de boletos de primera clase vendidos en la ruta
+     * @return Total de boletos de primera clase
+     */
+    public int getPrimerVendidos(){
+        return primerVendidos;
+    }
+    
+    /**
+     * Obtiene el total de boletos vendidos en la ruta
+     * @return La suma de boletos económicos y de primera clase en la ruta
+     */
+    public  int getTotalVendidos(){
+        return ecoVendidos + primerVendidos;
+    }
+    
+    public void printPasajeros(){
+        for (Pasajero p : personas){
+            if ( p != null)
+                p.printInfo();
+        }
+    }
+    
+    /**
+     * Resetea los valores contadores de cantidad de boletos 
+     * vendidos y la ganancia o perdida.
+     */
+    public void resetStats() {        
+        pasajerosRuta = 0;
+        ecoVendidos = 0;
+        primerVendidos = 0;
+        gananciaOrPerdida = 0;
     }
     
 }

@@ -72,19 +72,28 @@ public class TransporteAerea {
                         op = lea.next().charAt(0);
 
                         switch (Character.toLowerCase(op)){//SUB-MENU REPORTES	   					
-                            case 'a':	   					
+                            case 'a':
+                                aero.statsGenerales();
                                 break;	   					
-                            case 'b':	   					
+                            case 'b':                                
+                                System.out.println("\n\t***ESTATIDISTCAS POR RUTA***");
+                                aero.printStatsRuta();
                                 break;	   					
-                            case 'c':	   					
+                            case 'c':
+                                System.out.println("\n\t***LISTADO DE PASAJEROS***");
+                                aero.printListadoPasajeros();
                                 break;	   					
-                            case 'd':	   						
+                            case 'd':
+                                System.out.println("\n\t***MIS DATOS***");
+                                userAct.print();
                                 break;	   					
                             case 'e':	   					
                                 break;	   					
-                            case 'f':               
+                            case 'f':                                                                   
+                                System.out.println("\n\t***SALIENDO AL MENU PRINCIPAL***"); 
                                 break;	   				
-                            default:	   					
+                            default:                                                                   
+                                System.out.println("OPCION INCORRECTA! REGRESANDO AL MENU...");
                         }                    	
                         break;	
                         
@@ -99,7 +108,8 @@ public class TransporteAerea {
                                 break;	   					
                             case 'b':	   					
                                 break;	   					
-                            case 'c':	   					
+                            case 'c':                                                
+                                System.out.println("\n\t***SALIENDO AL MENU PRINCIPAL***"); 
                                 break;	   					
                             default:	   					
                         }	   				

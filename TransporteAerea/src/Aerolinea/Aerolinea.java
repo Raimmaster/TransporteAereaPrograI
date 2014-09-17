@@ -198,6 +198,10 @@ public class Aerolinea {
         elegirAsiento(rut, id);                
     }
     
+    /**
+     * Cancela el ticket del pasajero basandose en la función adyacente
+     * eliminarPasajeroById(id).
+     */
     public void cancelarTicket(){
         System.out.print("\nIngrese el numero de vuelo: ");        
         int n = lea.nextInt();        
@@ -264,6 +268,7 @@ public class Aerolinea {
         
         printDespacho(rut);
         rut.borrarPasajeros();
+        rut.resetStats();
         limpiarAsientos(rut.getPosicion());
     }
     
@@ -288,7 +293,38 @@ public class Aerolinea {
                 "Cantidad de primera clase: %d\n" +
                 "Cantidad de clase economica: %d\n" +
                 "Monto total generado: %.2f\n", rut.getNumVuelo(), rut.getCiudadDestino(),
-                Ruta.getTotalVendidos(), Ruta.getPrimerVendidos(), Ruta.getEcoVendidos(), rut.calcularTotalBoletos());
+                rut.getTotalVendidos(), rut.getPrimerVendidos(), rut.getEcoVendidos(), rut.calcularTotalBoletos());
         rut.calcularGanancia(rut.calcularTotalBoletos());
+    }
+
+    public void statsGenerales() {
+        
+    }
+    
+    public void printListadoPasajeros(){
+        System.out.print("Ingrese el numero de vuelo: ");
+        int n = lea.nextInt();
+        
+        Ruta rut = buscarRuta(n);
+        if (rut == null)
+            return;
+        
+        rut.printPasajeros();
+        System.out.println("El total de pasajeros en la ruta es de: " + rut.getTotalVendidos());
+    }
+    
+    public void printStatsRuta(){
+        System.out.print("Ingrese el numero de vuelo: ");
+        int n = lea.nextInt();
+        
+        Ruta rut = buscarRuta(n);
+        if (rut == null)
+            return;
+        
+        rut.printDatosRuta();
+        System.out.printf("\nCantidad de boletos vendido historicamente en la ruta: %d\n" + 
+                "Monto total de ingresos obtenidos: %.2f\nCosto incurrido historicamente en la ruta: %.2f\n" 
+                ,Ruta.getTotalVendidosTotal(), Ruta.getMontoTotal(), Ruta.getCostoTotal());
+        Ruta.calcularGananciaOrPerdidaTotal();
     }
 }
