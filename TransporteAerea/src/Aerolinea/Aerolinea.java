@@ -285,21 +285,25 @@ public class Aerolinea {
     
     /**
      * Imprime todos los datos de despacho de la ruta
+     * A la vez calcula las ganancias y costos
      * @param rut Ruta a despachar
      */
     public void printDespacho(Ruta rut){
+        double totalBoletos = rut.calcularTotalBoletos();
         System.out.printf("\nDespachando la ruta %d hacia %s\n" +
                 "Cantidad de asientos comprados: %d\n" + 
                 "Cantidad de primera clase: %d\n" +
                 "Cantidad de clase economica: %d\n" +
                 "Monto total generado: %.2f\n", rut.getNumVuelo(), rut.getCiudadDestino(),
-                rut.getTotalVendidos(), rut.getPrimerVendidos(), rut.getEcoVendidos(), rut.calcularTotalBoletos());
-        rut.calcularGanancia(rut.calcularTotalBoletos());
+                rut.getTotalVendidos(), rut.getPrimerVendidos(), rut.getEcoVendidos(), totalBoletos);
+        rut.calcularGanancia(totalBoletos);
         Ruta.setCostoTotal(rut.getCostoDespacho());
     }
 
     public void statsGenerales() {
-        
+        System.out.printf("Cantidad de rutas creadas: %d\nCantidad de boletos históricos vendidos: %d" + 
+                "Monto historico generado: %.2f\nCosto historico incurrido: %.2f\nRuta MAS rentable: %d",
+                Ruta.getRutasCreadas());
     }
     
     /**

@@ -58,10 +58,18 @@ public class Ruta {
         return MONTO_TOTAL;
     }
     
+    /**
+     * Obtiene el costo histórico de la ruta
+     * @return Valor de COSTO_TOTAL
+     */
     public static double getCostoTotal(){
         return COSTO_TOTAL;
     }
     
+    /**
+     * Setea el costo histórico de despacho de la ruta
+     * @param tot Valor de costo de despacho
+     */
     public static void setCostoTotal(double tot){
         COSTO_TOTAL += tot;
     }
@@ -339,6 +347,9 @@ public class Ruta {
         return ecoVendidos + primerVendidos;
     }
     
+    /**
+     * Imprime la información personal de todos los pasajeros de la ruta
+     */
     public void printPasajeros(){
         for (Pasajero p : personas){
             if ( p != null)
