@@ -62,6 +62,10 @@ public class Ruta {
         return COSTO_TOTAL;
     }
     
+    public static void setCostoTotal(double tot){
+        COSTO_TOTAL += tot;
+    }
+    
     /**
      * Calcula y muestra la ganancia o pérdida total generada del vuelo
      */
@@ -258,7 +262,7 @@ public class Ruta {
             if (p != null)
                 total += p.getTotal();
         }
-        
+        MONTO_TOTAL += total;
         return total;
     }
     

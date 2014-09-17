@@ -295,12 +295,16 @@ public class Aerolinea {
                 "Monto total generado: %.2f\n", rut.getNumVuelo(), rut.getCiudadDestino(),
                 rut.getTotalVendidos(), rut.getPrimerVendidos(), rut.getEcoVendidos(), rut.calcularTotalBoletos());
         rut.calcularGanancia(rut.calcularTotalBoletos());
+        Ruta.setCostoTotal(rut.getCostoDespacho());
     }
 
     public void statsGenerales() {
         
     }
     
+    /**
+     * Imprime todos los pasajeros de una ruta.
+     */
     public void printListadoPasajeros(){
         System.out.print("Ingrese el numero de vuelo: ");
         int n = lea.nextInt();
@@ -313,6 +317,9 @@ public class Aerolinea {
         System.out.println("El total de pasajeros en la ruta es de: " + rut.getTotalVendidos());
     }
     
+    /**
+     * Imprime las estadísticas generales de una ruta
+     */
     public void printStatsRuta(){
         System.out.print("Ingrese el numero de vuelo: ");
         int n = lea.nextInt();
