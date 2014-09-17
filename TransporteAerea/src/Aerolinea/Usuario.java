@@ -2,35 +2,48 @@ package Aerolinea;
 
 public class Usuario {
     
-    private String name,user,tip;
-    private int pass;
-   
-    
-    
-    //Constructor
-    public Usuario( String use,int pas, String tp, String nam){
-        name = nam;
-        user = use;
-        pass= pas;
-        tip = tp;
-        
-        
+    private String nombre, username, password, tipoCuenta;
+
+    public Usuario(String n, String user, String pass, String tipo){
+    	nombre = n;
+    	username = user;
+    	password = pass;
+    	tipoCuenta = tipo;
     }
-    
-    
-    public void edit(String nam , String use, int pas , String tp){
-        name = nam;
-        user = use;
-        pass = pas;
-        tip = tp;
+
+    public String getNombre(){
+    	return nombre;
     }
-    
-    public boolean creado(String u){
-        if(user == u )
-            return true;
-        return false;
+
+    public void setNombre(String n){
+    	nombre = n;
     }
-    
-    
-    
+
+    public String getUsername(){
+    	return username;
+    }
+
+    public void setUsername(String user){
+    	username = user;
+    }
+
+    public String getPassword(){
+    	return password;
+    }
+
+    public void setPassword(String p){
+    	password = p;
+    }
+
+    public String getTipoCuenta(){
+    	return tipoCuenta;
+    }
+
+    /**
+     * Imprime los datos del usuario, exceptuando password.
+     */
+    public void print(){
+        System.out.printf("Nombre: %s - Username: %s - Tipo de Cuenta: %s \n", 
+                getNombre(), getUsername(), getTipoCuenta());
+    }
 }

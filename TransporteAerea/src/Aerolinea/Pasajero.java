@@ -1,60 +1,73 @@
 package Aerolinea;
 
 public class Pasajero {
-    private static int vendidos;
-    private int edad, vuelo;
+    private int edad, vuelo, asiento;
+    private String nombre, genero, id;    
     private double subtotal, descuento, impuesto, total;
-    private String nombre, id;
-    private char genero;
     
-    public Pasajero(String i, String n, int e, char g, int v){
-        vendidos++;
+    /**
+     * Constructor de Pasajero
+     * @param i Identidad del pasajero
+     * @param v Número de vuelo del pasajero
+     * @param e Edad del pasajero
+     * @param a Número del asiento
+     * @param nom Nombre completo del pasajero
+     * @param gen Género del Pasajero
+     */
+    public Pasajero(String i, int v, int e, String nom, String gen){
         id = i;
-        nombre = n;
-        edad = e;
-        genero = g;
         vuelo = v;
+        edad = e;
+        //asiento = a;
+        nombre = nom;
+        genero = gen;
+        descuento = 0;
+        impuesto = 0;
+        total = 0;
+        subtotal = 0;
+    }
+
+    public String getId(){
+        return id;
     }
     
-    
-    public boolean existeEnVuelo(int v){
+    public int getAsiento(){
+        return asiento;
+    }
+
+    public boolean existe(int v){
         if (vuelo == v)
             return true;
         return false;
-    }
-    
-    public void calcularTotal(double s, double p1, double p2){
-        subtotal = s;
-        if (edad>65)
-            descuento = subtotal * 0.35;
-        impuesto = (p1+p2)* 0.05;
-        total = subtotal - descuento + impuesto;
     }
     
     public double getSubtotal(){
         return subtotal;
     }
     
-    public double getTotal(){
-        return total;
+    public double getDescuento(){
+        return descuento;
     }
     
     public double getImpuesto(){
         return impuesto;
     }
     
-    public double getDescuento(){
-        return descuento;
+    public double getTotal(){
+        return total;
     }
     
-    public String getId(){
-        return id;
+    public void setTotales(double sub, double pE, double pP){
+        subtotal = sub;
+        if (edad > 65)
+            descuento = subtotal * 0.35;
+        impuesto = (pE + pP) * 0.05;
+        total = subtotal - descuento + impuesto;
     }
     
-    public void printTotales(){
-        System.out.printf("Subtotal: %f%nImpuesto: %f%nDescuento%d%nTotal a Pagar: %f%n",
-                            subtotal, impuesto, descuento, total);
-                    
+    public void printBoleto(){
+        System.out.printf("\n\tFACTURACION\nSubtotal: %.2f \nDescuento: %.2f \nImpuesto: %.2f \nTotal: %.2f \n",
+                getSubtotal(), getDescuento(), getImpuesto(), getTotal());
     }
 }
 

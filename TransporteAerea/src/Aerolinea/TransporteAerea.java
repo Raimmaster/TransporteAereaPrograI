@@ -3,75 +3,123 @@ package Aerolinea;
 import java.util.Scanner;
 
 public class TransporteAerea {
-   public static void main(String [] args){
-       Aerolinea Taca = new Aerolinea();
-       int resp;
-       Scanner rd = new Scanner(System.in);
-       boolean state=false;
-       do{
-            do{
-            //login
-                state=true;
-            }while(state==false);
-            do{
-                //MENU PRINCIPAL
-                System.out.print("MENU PRINCIPAL:\n"
-                        + "\t 1 - CREAR UNA RUTA \n"
-                        + "\t 2 - BOLETERIA \n"
-                        + "\t 3 - DESPACHAR VUELO \n"
-                        + "\t 4 - REPORTES \n"
-                        + "\t 5 - USUARIOS \n"
-                        + "\t 6 - CERRAR SESION \n"
-                        + "\t 7 - CERRAR PROGRAMA \n"
-                        + "Seleccione opcion: "); resp=rd.nextInt();
-                switch(resp){
-                    case 1:
-                        Taca.crearRuta();
-                        break;
-                    case 2:
-                        int res;
+   
+   public static void main(String[] args) {
+   	Scanner lea = new Scanner(System.in);
+   	int res = 0, cant = 0;
+   	Aerolinea aero;
+
+   	do{
+            System.out.print("Ingrese la cantidad MAXIMA de rutas que manejara la aerolinea: ");
+            cant = lea.nextInt();
+   	}while(cant <= 0);
+	   	
+	aero = new Aerolinea(cant);//CREACION DE LA AEROLINEA  	 
+	
+        do{//LOGIN	   		
+            Usuario userAct = aero.login();
+	    char op = 0;//variable de control de SUB-MENUS
+
+            do{//MENU
+                System.out.print("\n\t--***MENU***--\n1. Crear una ruta.\n2. Boleteria." +
+                        "\n3. Despachar vuelo.\n4. Reportes.\n5. Usuarios.\n6. Cerrar sesion.\n7. Cerrar programa." +
+                        "\nIngrese el numero de su seleccion: ");
+                
+               res = lea.nextInt();
+               
+                switch (res){	   				
+                    case 1: 
+                        if (!userAct.getTipoCuenta().equals("ADMIN"))
+                            continue;
+                        aero.createRuta();
+                        break;	   
+                        
+                    case 2:	
                         do{
-                            System.out.print("--Menu de Boleteria--\n"
-                        + "\t1 - Vender Boleto\n"
-                        + "\t2 - Cancelar Ticket\n"
-                        + "\t3 - Salir al Menu Principal\n"
-                        + "\t Seleccione Opcion: ");res=rd.nextInt();
-                        switch (res){
-                            case 1:
-                                Taca.venderTicket();
-                                break;
-                            case 2:
-                                Taca.cancelarTicket();
-                                break;
-                            case 3:
-                                System.out.println("Saliendo al Menu Principal");
-                                break;
-                            default:
-                                System.out.println("Ingrese una opcion valida");
-                        }
-                        }while (res!=3);
-                        
-                    case 3:
-                        
+                            System.out.print("\n\t***OPCIONES***\na. Vender ticket." +
+                                    "\nb. Cancelar ticket.\nc. Regresar al menú principal." +
+                                    "\nIngrese el caracter de su seleccion: ");
+                            op = lea.next().charAt(0);
+
+                            switch (Character.toLowerCase(op)){//SUB-MENU BOLETERIA	   				
+                                case 'a':                             
+                                    System.out.println("\n\t***VENDER TICKET***");        
+                                    aero.venderTicket();
+                                    break;	   				
+                                case 'b':	
+                                 System.out.println("\n\t***CANCELAR TICKET***"); 
+                                    aero.cancelarTicket();
+                                    break;	   				
+                                case 'c':
+                                    System.out.println("\n\t***SALIENDO AL MENU PRINCIPAL***"); 
+                                    break;	   				
+                                default:
+                                    System.out.println("OPCION INCORRECTA! REGRESANDO AL MENU...");
+                            }	
+                        }while(op!='c');   				
                         break;
+                        
+                    case 3:                                                
+                        System.out.println("\n\t***DESPACHAR VUELO***"); 
+                        aero.despacharVuelo();
+                        break;	
+                        
                     case 4:
+                        System.out.print("\n\t***OPCIONES***\na. Estadisticas generales." +
+                                "\nb. Estatidisticas por ruta.\nc. Listado de pasajeros." +
+                                "\nd. Mis datos.\ne. Log.\nf. Regresar al menu principal." +
+                                "\nIngrese el caracter de su seleccion: ");
+                        op = lea.next().charAt(0);
+
+                        switch (Character.toLowerCase(op)){//SUB-MENU REPORTES	   					
+                            case 'a':	   					
+                                break;	   					
+                            case 'b':	   					
+                                break;	   					
+                            case 'c':	   					
+                                break;	   					
+                            case 'd':	   						
+                                break;	   					
+                            case 'e':	   					
+                                break;	   					
+                            case 'f':               
+                                break;	   				
+                            default:	   					
+                        }                    	
+                        break;	
                         
-                        break;
-                    case 5:
+                    case 5:	 
+                        System.out.print("\n\t***OPCIONES***\na. Editar mis datos." +
+                                "\nb. Crear usuario.\nc. Regresar al menu principal." +
+                                "\nIngrese el caracter de su seleccion: ");
+                        op = lea.next().charAt(0);
+                                                  
+                        switch (Character.toLowerCase(op)){//SUB-MENU USUARIOS	   				
+                            case 'a':	   				
+                                break;	   					
+                            case 'b':	   					
+                                break;	   					
+                            case 'c':	   					
+                                break;	   					
+                            default:	   					
+                        }	   				
+                        break;	
                         
-                        break;
                     case 6:
-                        System.out.print("\t--Cerrando Sesion..!!");
+                        System.out.println("CERRANDO SESION...");
+                        break;	  
+                        
+                    case 7:	   
+                        System.out.println("SALIENDO DEL PROGRAMA...");
                         break;
-                    case 7:
-                        System.out.print("\t--Saliendo del Programa...!!");
-                        break;
-                    default:
-                        System.out.print("Ingrese una opcion valida");
-                }
-            }while(resp!=7);
-            if(resp==7)
-                break;
-        }while(state==false);
+                        
+                    default:	   				
+                        System.out.println("Opcion incorrecta; ingrese su opcion de nuevo.");	   			
+                }   
+                
+            }while (res != 6 && res != 7);//repite mientras no se ingrese 6 o 7
+            
+        }while(res == 6);//si es 6, volver a login
+
    }
 }
