@@ -152,10 +152,8 @@ public class Ruta {
         for (Pasajero pas : personas){
             if (pas != null && pas.getId().equals(id)){
                 pas = null;
-                System.out.print("Pasajero Eliminado Exitosamente");
             }
         }
-        System.out.printf("El pasajero no existe.");
     }
     
     public void boletoPasajero(String id, int seat){
