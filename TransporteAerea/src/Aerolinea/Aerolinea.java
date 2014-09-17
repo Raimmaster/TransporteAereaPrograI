@@ -8,6 +8,7 @@ public class Aerolinea {
     private static final int CANT_USERS = 10;
     //OBJETOS
     private Usuario [] users = new Usuario[CANT_USERS];
+    private Usuario currentUser;
     private Ruta [] rutas;
     //OTRAS VARIABLES
     private String [][] listadoAsientos;
@@ -21,7 +22,61 @@ public class Aerolinea {
         CANT_MAXIMA_RUTAS = cantRutas;
         rutas = new Ruta[CANT_MAXIMA_RUTAS];
         listadoAsientos = new String[CANT_MAXIMA_RUTAS][];
-        users[0] = new Usuario("admin", "admin", "admin", "ADMIN");        
+        users[0] = new Usuario("admin", "admin", "admin", "admin", "ADMIN");        
+    }
+    
+    public void editarUsuario(){
+        String n, a, user, pass; 
+        System.out.print("Ingrese su nuevo Nombre: "); n = lea.next();
+        System.out.print("Ingrese su nuevo Apellido: "); a = lea.next();
+        System.out.print("Ingrese su nuevo Nombre de Usuario: "); user = lea.next();
+        System.out.print("Ingrese su nueva Contraseña: "); pass = lea.next();
+        currentUser.editUsuario(n, a, user, pass);
+    }
+    
+    public void crearUsuario(){
+        String n, a, user, pass, tipo; 
+        System.out.print("Ingrese Nombre: "); n = lea.next();
+        System.out.print("Ingrese Apellido: "); a = lea.next();
+        System.out.print("Ingrese su Nombre de Usuario: "); user = lea.next();
+        System.out.print("Ingrese su Contraseña: "); pass = lea.next();
+        do{
+            char op;
+            System.out.print("Seleccione tipo de usuario: \n"
+                    + "a - Admin\n" 
+                    + "b - Content\n"
+                    + "c - Limit\n"
+                    + "Seleccion opcion: "); op = lea.next().charAt(0);
+            switch (op){
+                case 'a':
+                    tipo = "ADMIN";
+                    break;
+                case 'b':
+                    tipo = "CONTENT";
+                    break;
+                case 'c':
+                    tipo = "LIMIT";
+                    break;
+                default:
+                    System.out.print("Ingrese una opcion valida\n");
+                    tipo = null;
+                    
+            }
+        }while (tipo != null);
+        
+        if (nextPos()!=null){
+            Usuario x = nextPos();
+            x = new Usuario(n, a, user, pass, tipo);
+        }else
+            System.out.print("No se admiten agregar mas usuarios");
+    }
+    
+    public Usuario nextPos(){
+        for (Usuario user : users){
+            if (user==null)
+                return user;
+        }
+        return null;
     }
 
     /**
@@ -63,8 +118,10 @@ public class Aerolinea {
      */
     public Usuario autenticarUsuario(String us, String pass){
         for (Usuario usuario : users){
-            if (usuario != null && usuario.getUsername().equals(us) && usuario.getPassword().equals(pass))
+            if (usuario != null && usuario.getUsername().equals(us) && usuario.getPassword().equals(pass)){
+                
                 return usuario;
+            }
         }
 
         return null;
@@ -83,8 +140,10 @@ public class Aerolinea {
             String pass = lea.next();
 
             userActual = autenticarUsuario(us, pass);
-            if (userActual != null)            
+            if (userActual != null)  {   
+                currentUser = userActual;
                 return userActual;  
+            }
         
             System.out.println("LOGIN INVALIDO! INGRESE SUS DATOS DE NUEVO.");
         }while (userActual == null);
@@ -208,11 +267,16 @@ public class Aerolinea {
         String id = lea.next();
         System.out.print("Ingrese numero de Asiento del pasajero: ");
         int asiento = lea.nextInt();
-        if (listadoAsientos[rut.getPosicion()][asiento-1].equals(id)){
-            listadoAsientos[rut.getPosicion()][asiento-1] = null;
-            rut.eliminarPasajeroById(id);
-            System.out.print("Ticket Cancelado");
-        }
+        if (listadoAsientos[rut.getPosicion()][asiento-1] != null && listadoAsientos[rut.getPosicion()][asiento-1].equals(id)){
+            System.out.print("Confirmar la cancelacion de Ticket (Ingrese si o no): ");
+            if (lea.next().equalsIgnoreCase("si")){
+                listadoAsientos[rut.getPosicion()][asiento-1] = null;
+                rut.eliminarPasajeroById(id);
+                System.out.print("Ticket Cancelado");
+            }else
+                System.out.print("Accion de cancelacion de ticket abortada");            
+        }else
+            System.out.println("No existe ese pasajero en este asiento.");
     }
     
     /**
@@ -249,22 +313,46 @@ public class Aerolinea {
         listadoAsientos[v][p - 1] = i;
     }    
 
+    /**
+     * Función para despachar el vuelo. Se ingresa el número de vuelo
+     * y luego hace uso de las funciones adyacentes, incluyendo la de borrar pasajeros
+     * (función de la clase Ruta).
+     */
     public void despacharVuelo() {
-        System.out.println("Ingrese el numero de vuelo: ");
+        System.out.print("Ingrese el numero de vuelo: ");
         int n = lea.nextInt();
         
         Ruta rut = buscarRuta(n);
-        printDespacho(rut);
         if (rut == null)
             return;
-           
+        
+        printDespacho(rut);
+        rut.borrarPasajeros();
+        limpiarAsientos(rut.getPosicion());
     }
     
+    /**
+     * Reset para que todos los asientos del vuelo
+     * a despachar vuelvan a null
+     * @param vuelo El vuelo que se limpiará
+     */
+    public void limpiarAsientos(int vuelo){
+        for (int i = 0; i < listadoAsientos[vuelo].length; i++){
+            listadoAsientos[vuelo][i] = null;
+        }
+    }
+    
+    /**
+     * Imprime todos los datos de despacho de la ruta
+     * @param rut Ruta a despachar
+     */
     public void printDespacho(Ruta rut){
         System.out.printf("\nDespachando la ruta %d hacia %s\n" +
                 "Cantidad de asientos comprados: %d\n" + 
                 "Cantidad de primera clase: %d\n" +
                 "Cantidad de clase economica: %d\n" +
-                "Monto total generado: %.2f");             
+                "Monto total generado: %.2f\n", rut.getNumVuelo(), rut.getCiudadDestino(),
+                Ruta.getTotalVendidos(), Ruta.getPrimerVendidos(), Ruta.getEcoVendidos(), rut.calcularTotalBoletos());
+        rut.calcularGanancia(rut.calcularTotalBoletos());
     }
 }

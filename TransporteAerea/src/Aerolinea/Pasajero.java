@@ -26,10 +26,6 @@ public class Pasajero {
         total = 0;
         subtotal = 0;
     }
-    
-    public void setAsiento(int as){
-        asiento = as;
-    }
 
     public String getId(){
         return id;

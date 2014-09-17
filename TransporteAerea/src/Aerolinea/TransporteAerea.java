@@ -46,7 +46,7 @@ public class TransporteAerea {
                                     System.out.println("\n\t***VENDER TICKET***");        
                                     aero.venderTicket();
                                     break;	   				
-                                case 'b':	   	
+                                case 'b':	
                                     System.out.println("\n\t***CANCELAR TICKET***"); 
                                     aero.cancelarTicket();
                                     break;	   				
@@ -56,7 +56,7 @@ public class TransporteAerea {
                                 default:
                                     System.out.println("OPCION INCORRECTA! REGRESANDO AL MENU...");
                             }	
-                        }while(op!='c');                            
+                        }while(op!='c');   				
                         break;
                         
                     case 3:                                                
@@ -88,21 +88,29 @@ public class TransporteAerea {
                         }                    	
                         break;	
                         
-                    case 5:	 
-                        System.out.print("\n\t***OPCIONES***\na. Editar mis datos." +
-                                "\nb. Crear usuario.\nc. Regresar al menu principal." +
-                                "\nIngrese el caracter de su seleccion: ");
-                        op = lea.next().charAt(0);
-                                                  
-                        switch (Character.toLowerCase(op)){//SUB-MENU USUARIOS	   				
-                            case 'a':	   				
-                                break;	   					
-                            case 'b':	   					
-                                break;	   					
-                            case 'c':	   					
-                                break;	   					
-                            default:	   					
-                        }	   				
+                    case 5:	
+                        do{
+                            System.out.print("\n\t***OPCIONES***\na. Editar mis datos." +
+                                    "\nb. Crear usuario.\nc. Regresar al menu principal." +
+                                    "\nIngrese el caracter de su seleccion: ");
+                            op = lea.next().charAt(0);
+
+                            switch (Character.toLowerCase(op)){//SUB-MENU USUARIOS	   				
+                                case 'a':	
+                                    System.out.println("\n\t***EDITAR MIS DATOS***"); 
+                                    aero.editarUsuario();
+                                    break;	   					
+                                case 'b':	  
+                                    System.out.println("\n\t***CREAR USUARIO***"); 
+                                    aero.crearUsuario();
+                                    break;	   					
+                                case 'c':	   
+                                    System.out.println("\n\t***SALIENDO AL MENU PRINCIPAL***"); 
+                                    break;	   					
+                                default:	  
+                                    System.out.println("OPCION INCORRECTA! REGRESANDO AL MENU...");
+                            }	   	
+                        }while (op!='c');
                         break;	
                         
                     case 6:

@@ -2,15 +2,26 @@ package Aerolinea;
 
 public class Usuario {
     
-    private String nombre, username, password, tipoCuenta;
+    private String nombre, apellido, nombrec, username, password, tipoCuenta;
 
-    public Usuario(String n, String user, String pass, String tipo){
+    public Usuario(String n, String a, String user, String pass, String tipo){
     	nombre = n;
+        apellido = a;
+        nombrec = nombre + " " + apellido;
     	username = user;
     	password = pass;
     	tipoCuenta = tipo;
     }
-
+    
+    public void editUsuario(String n, String a, String user, String pass){
+        nombre = n;
+        apellido = a;
+        nombrec = nombre + " " + apellido;
+        username = user;
+        password = pass;
+        System.out.println("\nDatos Modificados!");
+    }
+    
     public String getNombre(){
     	return nombre;
     }
