@@ -198,6 +198,23 @@ public class Aerolinea {
         elegirAsiento(rut, id);                
     }
     
+    public void cancelarTicket(){
+        System.out.print("\nIngrese el numero de vuelo: ");        
+        int n = lea.nextInt();        
+        Ruta rut = buscarRuta(n);
+        if (rut == null)
+            return;            
+        System.out.print("Ingrese Identidad del pasajero: ");
+        String id = lea.next();
+        System.out.print("Ingrese numero de Asiento del pasajero: ");
+        int asiento = lea.nextInt();
+        if (listadoAsientos[rut.getPosicion()][asiento-1].equals(id)){
+            listadoAsientos[rut.getPosicion()][asiento-1] = null;
+            rut.eliminarPasajeroById(id);
+            System.out.print("Ticket Cancelado");
+        }
+    }
+    
     /**
      * Función para elegir el asiento del pasajero
      * @param rut El objeto Ruta 

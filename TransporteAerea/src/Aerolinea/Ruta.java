@@ -140,6 +140,14 @@ public class Ruta {
         
         return ident;
     } 
+    
+    public void eliminarPasajeroById(String id){
+        for (Pasajero pas : personas){
+            if (pas != null && pas.getId().equals(id)){
+                pas = null;
+            }
+        }
+    }
          
     /**
      * Busca si el pasajero existe en la ruta a base de su identidad

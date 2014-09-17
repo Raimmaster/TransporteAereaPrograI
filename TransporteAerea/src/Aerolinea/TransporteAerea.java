@@ -35,23 +35,28 @@ public class TransporteAerea {
                         break;	   
                         
                     case 2:	
-                        System.out.print("\n\t***OPCIONES***\na. Vender ticket." +
-                                "\nb. Cancelar ticket.\nc. Regresar al menú principal." +
-                                "\nIngrese el caracter de su seleccion: ");
-                        op = lea.next().charAt(0);
-                        
-                        switch (Character.toLowerCase(op)){//SUB-MENU BOLETERIA	   				
-                            case 'a':                             
-                                System.out.println("\n\t***VENDER TICKET***");        
-                                aero.venderTicket();
-                                break;	   				
-                            case 'b':	   				
-                                break;	   				
-                            case 'c':	   				
-                                break;	   				
-                            default:
-                                System.out.println("OPCION INCORRECTA! REGRESANDO AL MENU...");
-                        }	   				
+                        do{
+                            System.out.print("\n\t***OPCIONES***\na. Vender ticket." +
+                                    "\nb. Cancelar ticket.\nc. Regresar al menú principal." +
+                                    "\nIngrese el caracter de su seleccion: ");
+                            op = lea.next().charAt(0);
+
+                            switch (Character.toLowerCase(op)){//SUB-MENU BOLETERIA	   				
+                                case 'a':                             
+                                    System.out.println("\n\t***VENDER TICKET***");        
+                                    aero.venderTicket();
+                                    break;	   				
+                                case 'b':	
+                                 System.out.println("\n\t***CANCELAR TICKET***"); 
+                                    aero.cancelarTicket();
+                                    break;	   				
+                                case 'c':
+                                    System.out.println("\n\t***SALIENDO AL MENU PRINCIPAL***"); 
+                                    break;	   				
+                                default:
+                                    System.out.println("OPCION INCORRECTA! REGRESANDO AL MENU...");
+                            }	
+                        }while(op!='c');   				
                         break;
                         
                     case 3:                                                
