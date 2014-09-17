@@ -209,15 +209,15 @@ public class Aerolinea {
         System.out.print("Ingrese numero de Asiento del pasajero: ");
         int asiento = lea.nextInt();
         if (listadoAsientos[rut.getPosicion()][asiento-1] != null && listadoAsientos[rut.getPosicion()][asiento-1].equals(id)){
-            System.out.print("Confirmar la cancelacion de Ticket");
+            System.out.print("Confirmar la cancelacion de Ticket (Ingrese si o no): ");
             if (lea.next().equalsIgnoreCase("si")){
                 listadoAsientos[rut.getPosicion()][asiento-1] = null;
                 rut.eliminarPasajeroById(id);
                 System.out.print("Ticket Cancelado");
             }else
-                System.out.print("Accion de cancelacion de ticket abortada");
-            
-        }
+                System.out.print("Accion de cancelacion de ticket abortada");            
+        }else
+            System.out.println("No existe ese pasajero en este asiento.");
     }
     
     /**
