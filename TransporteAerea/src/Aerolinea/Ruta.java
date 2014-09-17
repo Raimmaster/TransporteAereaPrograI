@@ -7,8 +7,8 @@ public class Ruta {
     private String ciudadDestino;
     private int cantAsientos, cantPrimeraClase;
     private double precioPrimeraClase, precioClaseEconomica;
-    private double costoDespacho;
-    private static int RUTAS_CREADAS;
+    private double costoDespacho, gananciaOrPerdida;
+    private static int RUTAS_CREADAS, ECO_VENDIDOS = 0, PRIMER_VENDIDOS = 0;
     private Pasajero [] personas;
     
     private static Scanner lea = new Scanner(System.in);
@@ -83,11 +83,20 @@ public class Ruta {
             cantAsientos, cantPrimeraClase, precioPrimeraClase, precioClaseEconomica, costoDespacho);
     }
     
+    /**
+     * Calcula el precio del asiento dependiendo si es de primera clase o no.
+     * También incrementa la cantidad de asientos vendidos por clase.
+     * @param asiento Número del asiento
+     * @return El precio.
+     */
     public double calcularPrecioAsiento(int asiento){
         if (asiento > 0 && asiento <= getCantPrimeraClase()){
+            PRIMER_VENDIDOS++;
             return getPrecioPrimeraClase();
+        }else{                    
+            ECO_VENDIDOS++;
+            return getPrecioClaseEconomica();            
         }
-        return getPrecioClaseEconomica();
     }
    
     /**
@@ -148,6 +157,12 @@ public class Ruta {
         return null;
     }    
     
+    /**
+     * Busca el pasajero al cual imprimir su boleto
+     * y settear sus totales-
+     * @param id Identidad del pasajero.
+     * @param seat Asiento del pasajero.
+     */
     public void boletoPasajero(String id, int seat){
         Pasajero pasa = buscarPasajero(id);
         double subTotal = calcularPrecioAsiento(seat);
@@ -155,14 +170,77 @@ public class Ruta {
         pasa.printBoleto();
     }
     
+    /**
+     * Borra todos los pasajeros de la ruta.
+     */
     public void borrarPasajeros(){
         for (Pasajero p : personas){
             p = null;
         }
     }
     
+    /**
+     * Calcula el monto total
+     * generado en la ruta
+     * @return El total generado.
+     */
+    public double calcularTotalBoletos(){
+        double total = 0;
+        for (Pasajero p : personas){
+            if (p != null)
+                total += p.getTotal();
+        }
+        
+        return total;
+    }
+    
+    /**
+     * Calcula la ganancia o perdida de la ruta al 
+     * momento de despachar
+     * @param total La perdida o ganancia.
+     */
+    public void calcularGanancia(double total){
+        if (total > costoDespacho){
+            gananciaOrPerdida = total - costoDespacho ;
+            System.out.println("La ganancia es: " + gananciaOrPerdida);
+        }
+        else{
+            gananciaOrPerdida = costoDespacho - total;
+            System.out.println("La perdida es: " + gananciaOrPerdida);
+        }
+        
+    }
+    
+    /**
+     * Obtiene el total de rutas creadas.
+     * @return La cantidad de rutas creadas en su totalidad.
+     */
     public static int getRutasCreadas(){
         return RUTAS_CREADAS;
+    }
+    
+    /**
+     * Obtiene la cantidad de boletos económicos vendidos.
+     * @return La cantidad de boletos de clase económica vendidos.
+     */
+    public static int getEcoVendidos(){
+        return ECO_VENDIDOS;
+    }
+    
+    /**
+     * Obtiene la cantidad de boletos de primera clase vendidos
+     * @return Total de boletos de primera clase
+     */
+    public static int getPrimerVendidos(){
+        return PRIMER_VENDIDOS;
+    }
+    
+    /**
+     * Obtiene el total de boletos vendidos
+     * @return La suma de boletos económicos y de primera clase
+     */
+    public static int getTotalVendidos(){
+        return ECO_VENDIDOS + PRIMER_VENDIDOS;
     }
     
 }

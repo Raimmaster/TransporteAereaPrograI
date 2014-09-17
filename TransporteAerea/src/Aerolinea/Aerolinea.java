@@ -232,22 +232,46 @@ public class Aerolinea {
         listadoAsientos[v][p - 1] = i;
     }    
 
+    /**
+     * Función para despachar el vuelo. Se ingresa el número de vuelo
+     * y luego hace uso de las funciones adyacentes, incluyendo la de borrar pasajeros
+     * (función de la clase Ruta).
+     */
     public void despacharVuelo() {
-        System.out.println("Ingrese el numero de vuelo: ");
+        System.out.print("Ingrese el numero de vuelo: ");
         int n = lea.nextInt();
         
         Ruta rut = buscarRuta(n);
-        printDespacho(rut);
         if (rut == null)
             return;
-           
+        
+        printDespacho(rut);
+        rut.borrarPasajeros();
+        limpiarAsientos(rut.getPosicion());
     }
     
+    /**
+     * Reset para que todos los asientos del vuelo
+     * a despachar vuelvan a null
+     * @param vuelo El vuelo que se limpiará
+     */
+    public void limpiarAsientos(int vuelo){
+        for (int i = 0; i < listadoAsientos[vuelo].length; i++){
+            listadoAsientos[vuelo][i] = null;
+        }
+    }
+    
+    /**
+     * Imprime todos los datos de despacho de la ruta
+     * @param rut Ruta a despachar
+     */
     public void printDespacho(Ruta rut){
         System.out.printf("\nDespachando la ruta %d hacia %s\n" +
                 "Cantidad de asientos comprados: %d\n" + 
                 "Cantidad de primera clase: %d\n" +
                 "Cantidad de clase economica: %d\n" +
-                "Monto total generado: %.2f");             
+                "Monto total generado: %.2f\n", rut.getNumVuelo(), rut.getCiudadDestino(),
+                Ruta.getTotalVendidos(), Ruta.getPrimerVendidos(), Ruta.getEcoVendidos(), rut.calcularTotalBoletos());
+        rut.calcularGanancia(rut.calcularTotalBoletos());
     }
 }
