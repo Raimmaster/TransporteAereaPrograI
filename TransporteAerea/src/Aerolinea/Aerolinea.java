@@ -312,13 +312,18 @@ public class Aerolinea {
         
     }
     
+    /**
+     * Función para encontrar la ruta con las mayores ganancias
+     * @return El objeto Ruta con la mayor ganancia
+     */
     public Ruta findRutaMasRentable(){
         Ruta x = null;
         double g = -99999;
-        for (Ruta r : rutas){
-            if (r != null && g < r.getGananciaOrPerdida()){
-                x = r;
-                g = r.getGananciaOrPerdida();
+        for (int i = 0; i < CANT_MAXIMA_RUTAS; i++){
+           if (rutas[i] != null && g < rutas[i].getGananciaOrPerdidaTotal()){
+                x = rutas[i];
+                g = rutas[i].getGananciaOrPerdidaTotal();
+                System.out.println("\n" + rutas[i].getGananciaOrPerdidaTotal());
             }                                    
         }
         

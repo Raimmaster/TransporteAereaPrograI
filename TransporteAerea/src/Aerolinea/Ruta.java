@@ -99,7 +99,11 @@ public class Ruta {
         else
             System.out.println("La perdida total generada es de: " + gananciaOrPerdidaTotal);        
     }
-
+    
+    public double getGananciaOrPerdidaTotal(){
+        return gananciaOrPerdidaTotal;
+    }
+    
     public int getNumVuelo(){
         return numVuelo;
     }
@@ -216,6 +220,7 @@ public class Ruta {
             if (pas != null && pas.getId().equals(id)){
                 pas = null;
                 pasajerosRuta--;
+                break;
             }
         }
     }
