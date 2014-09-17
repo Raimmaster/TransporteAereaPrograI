@@ -297,13 +297,16 @@ public class Aerolinea {
                 "Monto total generado: %.2f\n", rut.getNumVuelo(), rut.getCiudadDestino(),
                 rut.getTotalVendidos(), rut.getPrimerVendidos(), rut.getEcoVendidos(), totalBoletos);
         rut.calcularGanancia(totalBoletos);
-        Ruta.setCostoTotal(rut.getCostoDespacho());
+        rut.setCostoTotal(rut.getCostoDespacho());
     }
 
+    /**
+     * Imprime las estadísticas generales de la Aerolinea
+     */
     public void statsGenerales() {
         System.out.printf("Cantidad de rutas creadas: %d\nCantidad de boletos históricos vendidos: %d" + 
                 "Monto historico generado: %.2f\nCosto historico incurrido: %.2f\nRuta MAS rentable: %d",
-                Ruta.getRutasCreadas());
+                Ruta.getRutasCreadas(), Ruta.getVentaBoletosHistorico(), Ruta.getMontoHistorico(), Ruta.getCostoHistorico(), 0);
     }
     
     /**
@@ -335,7 +338,7 @@ public class Aerolinea {
         rut.printDatosRuta();
         System.out.printf("\nCantidad de boletos vendido historicamente en la ruta: %d\n" + 
                 "Monto total de ingresos obtenidos: %.2f\nCosto incurrido historicamente en la ruta: %.2f\n" 
-                ,Ruta.getTotalVendidosTotal(), Ruta.getMontoTotal(), Ruta.getCostoTotal());
-        Ruta.calcularGananciaOrPerdidaTotal();
+                , rut.getTotalVendidosRuta(), rut.getMontoTotal(), rut.getCostoTotal());
+        rut.calcularGananciaOrPerdidaTotal();
     }
 }
