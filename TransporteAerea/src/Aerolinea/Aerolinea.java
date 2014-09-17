@@ -207,7 +207,8 @@ public class Aerolinea {
         int n = lea.nextInt();        
         Ruta rut = buscarRuta(n);
         if (rut == null)
-            return;            
+            return;       
+        
         System.out.print("Ingrese Identidad del pasajero: ");
         String id = lea.next();
         System.out.print("Ingrese numero de Asiento del pasajero: ");

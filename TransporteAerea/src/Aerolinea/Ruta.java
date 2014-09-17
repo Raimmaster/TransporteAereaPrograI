@@ -216,9 +216,9 @@ public class Ruta {
      * @param id La identidad del pasajero
      */
     public void eliminarPasajeroById(String id){
-        for (Pasajero pas : personas){
-            if (pas != null && pas.getId().equals(id)){
-                pas = null;
+        for (int i = 0; i < personas.length; i++){
+            if (personas[i] != null && personas[i].getId().equals(id)){
+                personas[i] = null;
                 pasajerosRuta--;
                 break;
             }
