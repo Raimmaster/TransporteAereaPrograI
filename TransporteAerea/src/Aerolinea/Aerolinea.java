@@ -151,17 +151,6 @@ public class Aerolinea {
         return null;
     }
 
-    /**
-     * Función para encontrar la próxima posición en el arreglo de usuario.
-     * @return La posición i en el arreglo de usuarios
-     */
-    public int nextUserPos(){
-        for (int i = 0; i < CANT_USERS; i++){
-            if (users[i] == null)
-                return i;
-        }
-        return -1;
-    }
     
     /**
      * Funcion para crear una ruta.
@@ -265,8 +254,16 @@ public class Aerolinea {
             return;            
         System.out.print("Ingrese Identidad del pasajero: ");
         String id = lea.next();
-        System.out.print("Ingrese numero de Asiento del pasajero: ");
-        int asiento = lea.nextInt();
+        boolean state=false;
+        int asiento;
+        do{
+            System.out.print("Ingrese numero de Asiento del pasajero: ");
+            asiento = lea.nextInt();
+            if(asiento>0 && asiento<=rut.getCantAsientos()){
+                state=true;
+            }
+        }while(state=false);
+        
         if (listadoAsientos[rut.getPosicion()][asiento-1] != null && listadoAsientos[rut.getPosicion()][asiento-1].equals(id)){
             System.out.print("Confirmar la cancelacion de Ticket (Ingrese si o no): ");
             if (lea.next().equalsIgnoreCase("si")){
@@ -354,5 +351,60 @@ public class Aerolinea {
                 "Monto total generado: %.2f\n", rut.getNumVuelo(), rut.getCiudadDestino(),
                 Ruta.getTotalVendidos(), Ruta.getPrimerVendidos(), Ruta.getEcoVendidos(), rut.calcularTotalBoletos());
         rut.calcularGanancia(rut.calcularTotalBoletos());
+    }
+    
+    public void statsGenerales() {        
+        Ruta rut = findRutaMasRentable();
+
+        System.out.printf("Cantidad de rutas creadas: %d\nCantidad de boletos históricos vendidos: %d\n" + 
+                "Monto historico generado: %.2f\nCosto historico incurrido: %.2f\nRuta MAS rentable: %d",
+                Ruta.getRutasCreadas(), Ruta.getVentaBoletosHistorico(), Ruta.getMontoHistorico(), Ruta.getCostoHistorico(), rut.getNumVuelo());
+        
+    }
+    
+    public Ruta findRutaMasRentable(){
+        Ruta x = null;
+        double g = -99999;
+        for (Ruta r : rutas){
+            if (r != null && g < r.getGananciaOrPerdida()){
+                x = r;
+                g = r.getGananciaOrPerdida();
+            }                                    
+        }
+        
+        return x;
+    }
+    
+    /**
+     * Imprime todos los pasajeros de una ruta.
+     */
+    public void printListadoPasajeros(){
+        System.out.print("Ingrese el numero de vuelo: ");
+        int n = lea.nextInt();
+        
+        Ruta rut = buscarRuta(n);
+        if (rut == null)
+            return;
+        
+        rut.printPasajeros();
+        System.out.println("El total de pasajeros en la ruta es de: " + rut.getTotalVendidos());
+    }
+    
+    /**
+     * Imprime las estadísticas generales de una ruta
+     */
+    public void printStatsRuta(){
+        System.out.print("Ingrese el numero de vuelo: ");
+        int n = lea.nextInt();
+        
+        Ruta rut = buscarRuta(n);
+        if (rut == null)
+            return;
+        
+        rut.printDatosRuta();
+        System.out.printf("\nCantidad de boletos vendido historicamente en la ruta: %d\n" + 
+                "Monto total de ingresos obtenidos: %.2f\nCosto incurrido historicamente en la ruta: %.2f\n" 
+                , rut.getTotalVendidosRuta(), rut.getMontoTotal(), rut.getCostoTotal());
+        rut.calcularGananciaOrPerdidaTotal();
     }
 }

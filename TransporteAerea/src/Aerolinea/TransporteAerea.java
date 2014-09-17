@@ -65,27 +65,38 @@ public class TransporteAerea {
                         break;	
                         
                     case 4:
-                        System.out.print("\n\t***OPCIONES***\na. Estadisticas generales." +
-                                "\nb. Estatidisticas por ruta.\nc. Listado de pasajeros." +
-                                "\nd. Mis datos.\ne. Log.\nf. Regresar al menu principal." +
-                                "\nIngrese el caracter de su seleccion: ");
-                        op = lea.next().charAt(0);
+                        do{
+                            System.out.print("\n\t***OPCIONES***\na. Estadisticas generales." +
+                                    "\nb. Estatidisticas por ruta.\nc. Listado de pasajeros." +
+                                    "\nd. Mis datos.\ne. Log.\nf. Regresar al menu principal." +
+                                    "\nIngrese el caracter de su seleccion: ");
+                            op = lea.next().charAt(0);
 
-                        switch (Character.toLowerCase(op)){//SUB-MENU REPORTES	   					
-                            case 'a':	   					
-                                break;	   					
-                            case 'b':	   					
-                                break;	   					
-                            case 'c':	   					
-                                break;	   					
-                            case 'd':	   						
-                                break;	   					
-                            case 'e':	   					
-                                break;	   					
-                            case 'f':               
-                                break;	   				
-                            default:	   					
-                        }                    	
+                            switch (Character.toLowerCase(op)){//SUB-MENU REPORTES	   					
+                                case 'a':
+                                    aero.statsGenerales();
+                                    break;	   					
+                                case 'b':                                
+                                    System.out.println("\n\t***ESTATIDISTCAS POR RUTA***");
+                                    aero.printStatsRuta();
+                                    break;	   					
+                                case 'c':
+                                    System.out.println("\n\t***LISTADO DE PASAJEROS***");
+                                    aero.printListadoPasajeros();
+                                    break;	   					
+                                case 'd':
+                                    System.out.println("\n\t***MIS DATOS***");
+                                    userAct.print();
+                                    break;	   					
+                                case 'e':	   					
+                                    break;	   					
+                                case 'f':                                                                   
+                                    System.out.println("\n\t***SALIENDO AL MENU PRINCIPAL***"); 
+                                    break;	   				
+                                default:                                                                   
+                                    System.out.println("OPCION INCORRECTA! REGRESANDO AL MENU...");
+                            }             
+                        }while(op!='f');
                         break;	
                         
                     case 5:	

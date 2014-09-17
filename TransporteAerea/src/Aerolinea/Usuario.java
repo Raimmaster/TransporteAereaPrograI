@@ -26,24 +26,14 @@ public class Usuario {
     	return nombre;
     }
 
-    public void setNombre(String n){
-    	nombre = n;
-    }
-
+    
     public String getUsername(){
     	return username;
     }
 
-    public void setUsername(String user){
-    	username = user;
-    }
-
+    
     public String getPassword(){
     	return password;
-    }
-
-    public void setPassword(String p){
-    	password = p;
     }
 
     public String getTipoCuenta(){

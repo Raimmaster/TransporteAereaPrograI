@@ -5,10 +5,12 @@ import java.util.Scanner;
 public class Ruta {
     private int numVuelo, posicion;
     private String ciudadDestino;
-    private int cantAsientos, cantPrimeraClase;
+    private int cantAsientos, cantPrimeraClase, pasajerosRuta, ecoVendidos, primerVendidos, totalVendidosRuta;
     private double precioPrimeraClase, precioClaseEconomica;
     private double costoDespacho, gananciaOrPerdida;
-    private static int RUTAS_CREADAS, ECO_VENDIDOS = 0, PRIMER_VENDIDOS = 0;
+    private static int RUTAS_CREADAS = 0, ECO_VENDIDOS_TOTAL = 0, PRIMER_VENDIDOS_TOTAL = 0;//variables static de boletos y rutas
+    private static double MONTO_HISTORICO = 0, COSTO_HISTORICO = 0;
+    private double montoTotal = 0, costoTotal = 0, gananciaOrPerdidaTotal = 0;//variables static de totales
     private Pasajero [] personas;
     
     private static Scanner lea = new Scanner(System.in);
@@ -40,6 +42,58 @@ public class Ruta {
         System.out.println("\nRUTA CREADA!");
 
     } 
+    
+    public void printDatosRuta(){
+        System.out.printf("\nNumero de vuelo: %d - Ciudad de Destino: %s\n" +
+                "Cantidad de asientos totales: %d - Cantidad de asientos de primera clase: %d\n" + 
+                "Precio de asientos de primera clase: %.2f - Precio de asientos de clase economica: %.2f\n" + 
+                "Costo de despacho del vuelo: %.2f", getNumVuelo(), getCiudadDestino(), getCantAsientos(),
+                getCantPrimeraClase(), getPrecioPrimeraClase(), getPrecioClaseEconomica(), getCostoDespacho());
+    }
+    
+    public double getMontoTotal(){
+        return montoTotal;
+    }
+    
+    /**
+     * Obtiene el costo histórico de la ruta
+     * @return Valor de COSTO_TOTAL
+     */
+    public double getCostoTotal(){
+        return costoTotal;
+    }
+    
+    /**
+     * Setea el costo histórico de despacho de la ruta
+     * @param tot Valor de costo de despacho
+     */
+    public void setCostoTotal(double tot){
+        costoTotal += tot;
+        COSTO_HISTORICO += costoTotal;
+    }
+    
+    public static double getMontoHistorico(){
+        return MONTO_HISTORICO;
+    }
+    
+    public static double getCostoHistorico(){
+        return COSTO_HISTORICO;
+    }
+    
+    public static int getVentaBoletosHistorico(){
+        return ECO_VENDIDOS_TOTAL + PRIMER_VENDIDOS_TOTAL;
+    }
+    
+    /**
+     * Calcula y muestra la ganancia o pérdida total generada del vuelo
+     */
+    public void calcularGananciaOrPerdidaTotal(){                    
+        gananciaOrPerdidaTotal = montoTotal - costoTotal;
+        if (gananciaOrPerdidaTotal >= 0)
+            System.out.println("La ganancia total generada es de: " + gananciaOrPerdidaTotal);
+        else
+            System.out.println("La perdida total generada es de: " + gananciaOrPerdidaTotal);        
+    }
 
     public int getNumVuelo(){
         return numVuelo;
@@ -91,10 +145,10 @@ public class Ruta {
      */
     public double calcularPrecioAsiento(int asiento){
         if (asiento > 0 && asiento <= getCantPrimeraClase()){
-            PRIMER_VENDIDOS++;
+            PRIMER_VENDIDOS_TOTAL++;
             return getPrecioPrimeraClase();
         }else{                    
-            ECO_VENDIDOS++;
+            ECO_VENDIDOS_TOTAL++;
             return getPrecioClaseEconomica();            
         }
     }
@@ -142,9 +196,11 @@ public class Ruta {
     } 
     
     public void eliminarPasajeroById(String id){
-        for (Pasajero pas : personas){
-            if (pas != null && pas.getId().equals(id)){
-                pas = null;
+        for (int c = 0; c<cantAsientos; c++){
+            if (personas[c] != null &&personas[c].getId().equals(id)){
+                //personas[c].delDescuento();
+                
+                personas[c] = null;
             }
         }
     }
@@ -232,7 +288,7 @@ public class Ruta {
      * @return La cantidad de boletos de clase económica vendidos.
      */
     public static int getEcoVendidos(){
-        return ECO_VENDIDOS;
+        return ECO_VENDIDOS_TOTAL;
     }
     
     /**
@@ -240,7 +296,7 @@ public class Ruta {
      * @return Total de boletos de primera clase
      */
     public static int getPrimerVendidos(){
-        return PRIMER_VENDIDOS;
+        return PRIMER_VENDIDOS_TOTAL;
     }
     
     /**
@@ -248,7 +304,21 @@ public class Ruta {
      * @return La suma de boletos económicos y de primera clase
      */
     public static int getTotalVendidos(){
-        return ECO_VENDIDOS + PRIMER_VENDIDOS;
+        return ECO_VENDIDOS_TOTAL + PRIMER_VENDIDOS_TOTAL;
     }
     
+    public void printPasajeros(){
+        for (Pasajero p : personas){
+            if ( p != null)
+                p.printInfo();
+        }
+    }
+    
+    public int getTotalVendidosRuta(){
+        return totalVendidosRuta;
+    }
+    
+    public double getGananciaOrPerdida(){
+        return gananciaOrPerdida;
+    }
 }
