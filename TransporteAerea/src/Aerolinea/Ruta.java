@@ -74,6 +74,7 @@ public class Ruta {
      */
     public void setCostoTotal(double tot){
         costoTotal += tot;
+        COSTO_HISTORICO += costoTotal;
     }
     
     public static double getMontoHistorico(){
@@ -91,14 +92,12 @@ public class Ruta {
     /**
      * Calcula y muestra la ganancia o pérdida total generada del vuelo
      */
-    public void calcularGananciaOrPerdidaTotal(){
-        if (montoTotal > costoTotal){
-            gananciaOrPerdidaTotal = montoTotal - costoTotal;
+    public void calcularGananciaOrPerdidaTotal(){                    
+        gananciaOrPerdidaTotal = montoTotal - costoTotal;
+        if (gananciaOrPerdidaTotal >= 0)
             System.out.println("La ganancia total generada es de: " + gananciaOrPerdidaTotal);
-        }else {            
-            gananciaOrPerdidaTotal = costoTotal - montoTotal;
-            System.out.println("La perdida total generada es de: " + gananciaOrPerdidaTotal);
-        }
+        else
+            System.out.println("La perdida total generada es de: " + gananciaOrPerdidaTotal);        
     }
 
     public int getNumVuelo(){
@@ -286,6 +285,7 @@ public class Ruta {
                 total += p.getTotal();
         }
         montoTotal += total;
+        MONTO_HISTORICO += total;
         return total;
     }
     
@@ -294,16 +294,16 @@ public class Ruta {
      * momento de despachar
      * @param total La perdida o ganancia.
      */
-    public void calcularGanancia(double total){
-        if (total > costoDespacho){
-            gananciaOrPerdida = total - costoDespacho ;
-            System.out.println("La ganancia es: " + gananciaOrPerdida);
-        }
-        else{
-            gananciaOrPerdida = costoDespacho - total;
-            System.out.println("La perdida es: " + gananciaOrPerdida);
-        }
-        
+    public void calcularGanancia(double total){               
+        gananciaOrPerdida = total - costoDespacho;
+        if (gananciaOrPerdida >= 0)
+            System.out.println("La ganancia es: " + gananciaOrPerdida);        
+        else
+            System.out.println("La perdida es: " + gananciaOrPerdida);               
+    }
+    
+    public double getGananciaOrPerdida(){
+        return gananciaOrPerdida;
     }
     
     /**
