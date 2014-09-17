@@ -40,6 +40,35 @@ public class Ruta {
         System.out.println("\nRUTA CREADA!");
 
     } 
+    
+    /**
+     * Crea el nuevo pasajero de la ruta.
+     * @return La identidad del pasajero
+     */
+    public String createPasajero(){
+        int esp = nextPasaPos();
+        
+        if (esp == -1)
+            return null;
+        
+        System.out.print("Ingrese su numero de identidad: ");
+        String ident = lea.next();
+        System.out.print("Ingrese su primer nombre: ");
+        String nomb = lea.next();
+        System.out.print("Ingrese su apellido: ");
+        nomb += " " + lea.next();
+        System.out.print("Ingrese su edad: ");
+        int ed = lea.nextInt();
+        System.out.print("Ingrese su genero: ");
+        String gen = lea.next();
+        
+        personas[esp] = new Pasajero(ident, numVuelo, ed, nomb, gen);
+        
+        //double sub = calcularPrecioAsiento(asiento);
+        //personas[esp].setTotales(sub, getPrecioClaseEconomica(), getPrecioPrimeraClase());
+        
+        return ident;
+    } 
 
     public int getNumVuelo(){
         return numVuelo;
@@ -104,35 +133,6 @@ public class Ruta {
     }
     
     /**
-     * Crea el nuevo pasajero de la ruta.
-     * @return La identidad del pasajero
-     */
-    public String createPasajero(){
-        int esp = nextPasaPos();
-        
-        if (esp == -1)
-            return null;
-        
-        System.out.print("Ingrese su numero de identidad: ");
-        String ident = lea.next();
-        System.out.print("Ingrese su primer nombre: ");
-        String nomb = lea.next();
-        System.out.print("Ingrese su apellido: ");
-        nomb += " " + lea.next();
-        System.out.print("Ingrese su edad: ");
-        int ed = lea.nextInt();
-        System.out.print("Ingrese su genero: ");
-        String gen = lea.next();
-        
-        personas[esp] = new Pasajero(ident, numVuelo, ed, nomb, gen);
-        
-        //double sub = calcularPrecioAsiento(asiento);
-        //personas[esp].setTotales(sub, getPrecioClaseEconomica(), getPrecioPrimeraClase());
-        
-        return ident;
-    } 
-         
-    /**
      * Busca si el pasajero existe en la ruta a base de su identidad
      * @param id El número de identidad del pasajero a buscar.
      * @return El objeto Pasajero encontrado; null si no existe.
@@ -147,6 +147,16 @@ public class Ruta {
         System.out.printf("El pasajero no existe.");
         return null;
     }    
+    
+    public void eliminarPasajeroById(String id){
+        for (Pasajero pas : personas){
+            if (pas != null && pas.getId().equals(id)){
+                pas = null;
+                System.out.print("Pasajero Eliminado Exitosamente");
+            }
+        }
+        System.out.printf("El pasajero no existe.");
+    }
     
     public void boletoPasajero(String id, int seat){
         Pasajero pasa = buscarPasajero(id);
