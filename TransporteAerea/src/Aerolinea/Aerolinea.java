@@ -21,7 +21,7 @@ public class Aerolinea {
         CANT_MAXIMA_RUTAS = cantRutas;
         rutas = new Ruta[CANT_MAXIMA_RUTAS];
         listadoAsientos = new String[CANT_MAXIMA_RUTAS][];
-        users[0] = new Usuario("admin", "admin", "admin", "ADMIN");        
+        users[0] = new Usuario("admin", "admin", "admin", "admin", "ADMIN");        
     }
 
     /**
