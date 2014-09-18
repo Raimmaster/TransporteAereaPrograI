@@ -29,11 +29,7 @@ public class TransporteAerea {
                
                 switch (res){	   				
                     case 1: 
-                        if (!userAct.getTipoCuenta().equals("ADMIN"))
-                            continue;
-                        aero.createRuta();
-                        break;	   
-                        
+                        aero.createRuta(); 
                     case 2:	
                         do{
                             System.out.print("\n\t***OPCIONES***\na. Vender ticket." +
@@ -77,7 +73,7 @@ public class TransporteAerea {
                                     aero.statsGenerales();
                                     break;	   					
                                 case 'b':                                
-                                    System.out.println("\n\t***ESTATIDISTCAS POR RUTA***");
+                                    System.out.println("\n\t***ESTATIDISTICAS POR RUTA***");
                                     aero.printStatsRuta();
                                     break;	   					
                                 case 'c':

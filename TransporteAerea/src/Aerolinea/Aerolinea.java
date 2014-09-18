@@ -35,40 +35,43 @@ public class Aerolinea {
     }
     
     public void crearUsuario(){
-        String n, a, user, pass, tipo; 
-        System.out.print("Ingrese Nombre: "); n = lea.next();
-        System.out.print("Ingrese Apellido: "); a = lea.next();
-        System.out.print("Ingrese su Nombre de Usuario: "); user = lea.next();
-        System.out.print("Ingrese su Contraseña: "); pass = lea.next();
-        do{
-            char op;
-            System.out.print("Seleccione tipo de usuario: \n"
-                    + "a - Admin\n" 
-                    + "b - Content\n"
-                    + "c - Limit\n"
-                    + "Seleccion opcion: "); op = lea.next().charAt(0);
-            switch (op){
-                case 'a':
-                    tipo = "ADMIN";
-                    break;
-                case 'b':
-                    tipo = "CONTENT";
-                    break;
-                case 'c':
-                    tipo = "LIMIT";
-                    break;
-                default:
-                    System.out.print("Ingrese una opcion valida\n");
-                    tipo = null;
-                    
-            }
-        }while (tipo != null);
-        
-        if (nextPos()!=null){
-            Usuario x = nextPos();
-            x = new Usuario(n, a, user, pass, tipo);
+        if (currentUser.getTipoCuenta().equalsIgnoreCase("Admin")){
+            String n, a, user, pass, tipo; 
+            System.out.print("Ingrese Nombre: "); n = lea.next();
+            System.out.print("Ingrese Apellido: "); a = lea.next();
+            System.out.print("Ingrese su Nombre de Usuario: "); user = lea.next();
+            System.out.print("Ingrese su Contraseña: "); pass = lea.next();
+            do{
+                char op;
+                System.out.print("Seleccione tipo de usuario: \n"
+                        + "a - Admin\n" 
+                        + "b - Content\n"
+                        + "c - Limit\n"
+                        + "Seleccion opcion: "); op = lea.next().charAt(0);
+                switch (op){
+                    case 'a':
+                        tipo = "ADMIN";
+                        break;
+                    case 'b':
+                        tipo = "CONTENT";
+                        break;
+                    case 'c':
+                        tipo = "LIMIT";
+                        break;
+                    default:
+                        System.out.print("Ingrese una opcion valida\n");
+                        tipo = null;
+
+                }
+            }while (tipo != null);
+
+            if (nextPos()!=null){
+                Usuario x = nextPos();
+                x = new Usuario(n, a, user, pass, tipo);
+            }else
+                System.out.print("No se admiten agregar mas usuarios");
         }else
-            System.out.print("No se admiten agregar mas usuarios");
+            System.out.print("No tiene privilegios para realizar esta accion");
     }
     
     public Usuario nextPos(){
@@ -156,32 +159,35 @@ public class Aerolinea {
      * Funcion para crear una ruta.
      */
     public void createRuta(){
-        int esp = nextRutaPos();        
-        if (esp == -1){
-            System.out.println("Las rutas totales han sido llenadas; ya no hay espacio.");
-            return;
-        }
-        int n = 0;
-        do{
-            System.out.print("\nIngrese el numero de vuelo: ");
-            n = lea.nextInt();
-        }while(buscarRuta(n) != null);
-        
-        System.out.print("\nIngrese la ciudad de destino: ");
-        String c = lea.next();
-        System.out.print("Ingrese la cantidad maxima de asientos que posee el vuelo: ");
-        int max = lea.nextInt();
-        listadoAsientos[esp] = new String[max];//asignar la cantidad maxima de asientos a la fila/vuelo
-        System.out.print("Ingrese el limite de asientos de primera clase: ");
-        int pClas = lea.nextInt();
-        System.out.print("Ingrese el precio de los asientos de primera clase: ");
-        double precP = lea.nextDouble();
-        System.out.print("Ingrese el precio de los asientos de clase economica: ");
-        double precE = lea.nextDouble();
-        System.out.print("Ingrese el costo que conlleva despachar esta ruta: ");
-        double cost = lea.nextDouble();
-        
-        rutas[esp] = new Ruta(n, c, max, pClas, precP, precE, cost, esp);  
+        if (currentUser.getTipoCuenta().equalsIgnoreCase("Admin")){
+            int esp = nextRutaPos();        
+            if (esp == -1){
+                System.out.println("Las rutas totales han sido llenadas; ya no hay espacio.");
+                return;
+            }
+            int n = 0;
+            do{
+                System.out.print("\nIngrese el numero de vuelo: ");
+                n = lea.nextInt();
+            }while(buscarRuta(n) != null);
+
+            System.out.print("\nIngrese la ciudad de destino: ");
+            String c = lea.next();
+            System.out.print("Ingrese la cantidad maxima de asientos que posee el vuelo: ");
+            int max = lea.nextInt();
+            listadoAsientos[esp] = new String[max];//asignar la cantidad maxima de asientos a la fila/vuelo
+            System.out.print("Ingrese el limite de asientos de primera clase: ");
+            int pClas = lea.nextInt();
+            System.out.print("Ingrese el precio de los asientos de primera clase: ");
+            double precP = lea.nextDouble();
+            System.out.print("Ingrese el precio de los asientos de clase economica: ");
+            double precE = lea.nextDouble();
+            System.out.print("Ingrese el costo que conlleva despachar esta ruta: ");
+            double cost = lea.nextDouble();
+
+            rutas[esp] = new Ruta(n, c, max, pClas, precP, precE, cost, esp);  
+        }else
+            System.out.print("No tiene privilegios para realizar esta accion");
         
     }
     
@@ -226,54 +232,60 @@ public class Aerolinea {
      * necesarios para vender un ticket.
      */
     public void venderTicket(){
-        System.out.print("\nIngrese el numero de vuelo: ");        
-        int n = lea.nextInt();        
-        Ruta rut = buscarRuta(n);
-        if (rut == null)
-            return;            
-        
-        System.out.println("Destino: " + rut.getCiudadDestino());
-        int rutPos = rut.getPosicion();
-        int disp = asientosDisponibles(rutPos);
-        if (disp == 0)
-        {
-            System.out.println("\nNO HAY BOLETOS, AVION LISTO PARA DESPACHAR.\n");
-            return;
-        }
-        System.out.printf("Cantidad de asientos disponibles: %d\n", disp);  
-        
-        String id = rut.createPasajero();
-        elegirAsiento(rut, id);                
+        if (!currentUser.getTipoCuenta().equalsIgnoreCase("limit")){
+            System.out.print("\nIngrese el numero de vuelo: ");        
+            int n = lea.nextInt();        
+            Ruta rut = buscarRuta(n);
+            if (rut == null)
+                return;            
+
+            System.out.println("Destino: " + rut.getCiudadDestino());
+            int rutPos = rut.getPosicion();
+            int disp = asientosDisponibles(rutPos);
+            if (disp == 0)
+            {
+                System.out.println("\nNO HAY BOLETOS, AVION LISTO PARA DESPACHAR.\n");
+                return;
+            }
+            System.out.printf("Cantidad de asientos disponibles: %d\n", disp);  
+
+            String id = rut.createPasajero();
+            elegirAsiento(rut, id);          
+        }else
+            System.out.print("No tiene privilegios para realizar esta accion");
     }
     
     public void cancelarTicket(){
-        System.out.print("\nIngrese el numero de vuelo: ");        
-        int n = lea.nextInt();        
-        Ruta rut = buscarRuta(n);
-        if (rut == null)
-            return;            
-        System.out.print("Ingrese Identidad del pasajero: ");
-        String id = lea.next();
-        boolean state=false;
-        int asiento;
-        do{
-            System.out.print("Ingrese numero de Asiento del pasajero: ");
-            asiento = lea.nextInt();
-            if(asiento>0 && asiento<=rut.getCantAsientos()){
-                state=true;
-            }
-        }while(state=false);
-        
-        if (listadoAsientos[rut.getPosicion()][asiento-1] != null && listadoAsientos[rut.getPosicion()][asiento-1].equals(id)){
-            System.out.print("Confirmar la cancelacion de Ticket (Ingrese si o no): ");
-            if (lea.next().equalsIgnoreCase("si")){
-                listadoAsientos[rut.getPosicion()][asiento-1] = null;
-                rut.eliminarPasajeroById(id);
-                System.out.print("Ticket Cancelado");
+        if (!currentUser.getTipoCuenta().equalsIgnoreCase("limit")){
+            System.out.print("\nIngrese el numero de vuelo: ");        
+            int n = lea.nextInt();        
+            Ruta rut = buscarRuta(n);
+            if (rut == null)
+                return;            
+            System.out.print("Ingrese Identidad del pasajero: ");
+            String id = lea.next();
+            boolean state=false;
+            int asiento;
+            do{
+                System.out.print("Ingrese numero de Asiento del pasajero: ");
+                asiento = lea.nextInt();
+                if(asiento>0 && asiento<=rut.getCantAsientos()){
+                    state=true;
+                }
+            }while(state=false);
+
+            if (listadoAsientos[rut.getPosicion()][asiento-1] != null && listadoAsientos[rut.getPosicion()][asiento-1].equals(id)){
+                System.out.print("Confirmar la cancelacion de Ticket (Ingrese si o no): ");
+                if (lea.next().equalsIgnoreCase("si")){
+                    listadoAsientos[rut.getPosicion()][asiento-1] = null;
+                    rut.eliminarPasajeroById(id);
+                    System.out.print("Ticket Cancelado");
+                }else
+                    System.out.print("Accion de cancelacion de ticket abortada");            
             }else
-                System.out.print("Accion de cancelacion de ticket abortada");            
+                System.out.println("No existe ese pasajero en este asiento.");
         }else
-            System.out.println("No existe ese pasajero en este asiento.");
+            System.out.print("No tiene privilegios para realizar esta accion");
     }
     
     /**
@@ -316,16 +328,19 @@ public class Aerolinea {
      * (función de la clase Ruta).
      */
     public void despacharVuelo() {
-        System.out.print("Ingrese el numero de vuelo: ");
-        int n = lea.nextInt();
-        
-        Ruta rut = buscarRuta(n);
-        if (rut == null)
-            return;
-        
-        printDespacho(rut);
-        rut.borrarPasajeros();
-        limpiarAsientos(rut.getPosicion());
+        if (!currentUser.getTipoCuenta().equalsIgnoreCase("limit")){
+            System.out.print("Ingrese el numero de vuelo: ");
+            int n = lea.nextInt();
+
+            Ruta rut = buscarRuta(n);
+            if (rut == null)
+                return;
+
+            printDespacho(rut);
+            rut.borrarPasajeros();
+            limpiarAsientos(rut.getPosicion());
+        }else
+            System.out.print("No tiene privilegios para realizar esta accion");
     }
     
     /**
