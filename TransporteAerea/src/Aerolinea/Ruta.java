@@ -165,10 +165,10 @@ public class Ruta {
            
         ECO_VENDIDOS_TOTAL++;
         ecoVendidos++;
-        return getPrecioClaseEconomica();            
+        return getPrecioClaseEconomica();       
         
-    }
-   
+    } 
+       
     /**
      * Función para buscar la próxima posición en
      * el arreglo de Pasajeros
@@ -218,12 +218,13 @@ public class Ruta {
     public void eliminarPasajeroById(String id){
         for (int i = 0; i < personas.length; i++){
             if (personas[i] != null && personas[i].getId().equals(id)){
+                devolverValoresAnterioresContadores(personas[i].getAsiento());              
                 personas[i] = null;
                 pasajerosRuta--;
                 break;
             }
         }
-    }
+    }    
          
     /**
      * Busca si el pasajero existe en la ruta a base de su identidad
@@ -255,6 +256,22 @@ public class Ruta {
         pasa.setTotales(subTotal, getPrecioClaseEconomica(), getPrecioPrimeraClase());
         pasa.printBoleto();
         totalVendidosRuta++;
+    }
+    
+     
+    public void devolverValoresAnterioresContadores(int asiento){    
+        //setCostoTotal(costoDespacho * -1);
+
+        if (asiento > 0 && asiento <= getCantPrimeraClase()){
+            PRIMER_VENDIDOS_TOTAL--;
+            primerVendidos--;
+            //return getPrecioPrimeraClase();
+        }else{
+            ECO_VENDIDOS_TOTAL--;
+            ecoVendidos--;
+        }
+        totalVendidosRuta--;
+        //return getPrecioClaseEconomica();
     }
     
     /**
