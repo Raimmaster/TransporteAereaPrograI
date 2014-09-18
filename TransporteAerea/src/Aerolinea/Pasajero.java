@@ -74,6 +74,8 @@ public class Pasajero {
         subtotal = sub;
         if (edad > 65)
             descuento = subtotal * 0.35;
+        else
+            descuento = 0;
         impuesto = (pE + pP) * 0.05;
         total = subtotal - descuento + impuesto;
     }
